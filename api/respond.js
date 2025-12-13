@@ -19,6 +19,22 @@ export default async function handler(req, res) {
   const data = await response.json();
   res.json({ reply: data.choices[0].message.content });
 }
+async function apiRespond(userText) {
+  // 🔥 감정 분석 & 연출 먼저
+  respond(userText);
+
+  const res = await fetch('/api/respond', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: userText })
+  });
+
+  const data = await res.json();
+
+  // 🔥 여기서 진짜 쀼 대사 출력
+  speech.classList.remove('shaking');
+  typeText(data.reply);
+}
 {
   role: 'system',
   content: `
