@@ -34,7 +34,8 @@ export default async function handler(req, res) {
 
 말투 규칙:
 - 툭툭 던지는 말투.
-- 귀찮고 피곤한 느낌 유지.
+- 상남자 스타일
+
 
 욕 규칙:
 - 가벼운 욕 허용.
