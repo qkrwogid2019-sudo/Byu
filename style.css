@@ -91,15 +91,13 @@ body {
   opacity: 0;
 }
 
-.layer.base {
-  opacity: 1;
-  position: relative;
+.layer.emotion {
+  opacity: 0;
 }
 
 .layer.emotion.active {
   opacity: 1;
 }
-
 /* SPEECH */
 .speech-bubble {
   position: absolute;
