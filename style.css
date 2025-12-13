@@ -92,11 +92,16 @@ body {
 }
 
 .layer.base {
-  opacity: 1; /* ⭐ 기본 얼굴은 항상 보임 */
+  opacity: 1;
+  z-index: 1;
 }
 
-.layer.emotion.active {
-  opacity: 1;
+.layer.emotion {
+  z-index: 2;
+}
+
+#effectLayer {
+  z-index: 100;
 }
 }
 /* SPEECH */
@@ -114,7 +119,7 @@ body {
   font-size: 13px;
   line-height: 1.5;
   text-align: center;
-  z-index: 10;
+  z-index: 50;
 }
 
 .speech-bubble.shaking {
