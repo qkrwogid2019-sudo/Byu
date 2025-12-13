@@ -37,3 +37,18 @@ function flashFaces(faceList, duration = 500, finalFace) {
     }
   }, interval);
 }
+
+function interact() {
+  const text = document.getElementById("userInput").value;
+
+  // 말 걸면 무조건 호감 증가
+  liking = Math.min(1, liking + 0.15 + Math.random() * 0.2);
+  updateGauge();
+
+  // 내부: 사랑 표정 촤라라락
+  flashFaces(
+    loveFaces,
+    600,
+    randomFrom(angryFaces) // 마지막은 분노 고정
+  );
+}
