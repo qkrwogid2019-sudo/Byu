@@ -4,8 +4,8 @@
 const emotions = document.querySelectorAll('.emotion');
 const speech = document.getElementById('speech');
 const speechText = document.getElementById('speechText');
-const happyFill = document.getElementById('overflowFill');
-const sadnessFill = document.getElementById('stabilityFill');
+const overflowFill = document.getElementById('overflowFill'); // HAPPY
+const stabilityFill = document.getElementById('stabilityFill'); // SADNESS
 const input = document.getElementById('chatInput');
 const effectLayer = document.getElementById('effectLayer');
 
@@ -16,46 +16,38 @@ const coinRejectSound = document.getElementById('coinRejectSound');
 /* =========================
    CONSTANTS
 ========================= */
-const MAX_GAUGE = 100;
+const REFUSAL_THRESHOLD = 100;
 
 /* =========================
    STATE
 ========================= */
 let happy = 0;
 let sadness = 0;
+let isThinking = false;
 let shuffleTimer = null;
 let typingTimer = null;
-let isThinking = false;
 let audioUnlocked = false;
 
 /* =========================
-   ASSETS
+   EMOTION ASSETS
 ========================= */
 const negativeEmotions = [
-  'img/angry_01.png',
-  'img/angry_02.png',
-  'img/angry_03.png',
-  'img/angry_04.png'
+  'img/angry_01.png','img/angry_02.png','img/angry_03.png','img/angry_04.png'
 ];
-
 const positiveEmotions = [
-  'img/love_01.png',
-  'img/love_02.png',
-  'img/love_03.png',
-  'img/love_04.png'
+  'img/love_01.png','img/love_02.png','img/love_03.png','img/love_04.png'
 ];
 
 /* =========================
    WORDS
 ========================= */
 const positiveWords = [
-  '좋아','사랑','고마워','행복','기뻐','설레',
-  '안아','보고싶어','괜찮아','잘했어'
+  '좋아','사랑','사랑해','보고싶어','안아','뽀뽀','키스',
+  '행복','기뻐','설레','고마워','괜찮아','잘했어'
 ];
-
 const negativeWords = [
-  '힘들어','우울','불안','짜증','화나',
-  '외로워','아파','지쳐','싫어'
+  '힘들어','우울','불안','짜증','화나','외로워',
+  '아파','지쳐','무서워','미워','포기'
 ];
 
 /* =========================
@@ -75,13 +67,12 @@ function analyze(text) {
 }
 
 /* =========================
-   AUDIO (iOS)
+   AUDIO UNLOCK
 ========================= */
 function unlockAudio() {
   if (audioUnlocked) return;
   [emotionSound, coinSound, coinRejectSound].forEach(a => {
-    if (!a) return;
-    a.play().then(() => {
+    a?.play().then(() => {
       a.pause();
       a.currentTime = 0;
     }).catch(()=>{});
@@ -89,17 +80,10 @@ function unlockAudio() {
   audioUnlocked = true;
 }
 
-const play = a => {
-  if (!a) return;
-  a.currentTime = 0;
-  a.play().catch(()=>{});
-};
-
 /* =========================
-   EFFECT
+   EFFECTS
 ========================= */
 function showHappyEffect() {
-  if (!effectLayer) return;
   const el = document.createElement('div');
   el.className = 'happy-effect';
   el.innerText = '+1 HAPPY';
@@ -110,30 +94,23 @@ function showHappyEffect() {
 /* =========================
    EMOTION SHUFFLE
 ========================= */
-function chararararak(finalGroup, loops = 2, interval = 110) {
+function chararararak(finalGroup, interval = 100, loops = 2) {
   clearInterval(shuffleTimer);
-
   const all = [...emotions];
-  const finals = all.filter(e =>
-    finalGroup.includes(e.getAttribute('src'))
-  );
+  const finals = all.filter(e => finalGroup.includes(e.src));
 
-  let step = 0;
+  let i = 0, count = 0;
   const total = all.length * loops;
 
   shuffleTimer = setInterval(() => {
-    emotions.forEach(e => e.classList.remove('active'));
-    all[step % all.length].classList.add('active');
-    step++;
+    all.forEach(e => e.classList.remove('active'));
+    all[i % all.length].classList.add('active');
+    i++; count++;
 
-    if (step >= total) {
+    if (count >= total) {
       clearInterval(shuffleTimer);
-      emotions.forEach(e => e.classList.remove('active'));
-      if (finals.length) {
-        finals[Math.floor(Math.random() * finals.length)]
-          .classList.add('active');
-      }
-      play(emotionSound);
+      all.forEach(e => e.classList.remove('active'));
+      finals[Math.floor(Math.random()*finals.length)]?.classList.add('active');
     }
   }, interval);
 }
@@ -145,7 +122,6 @@ function typeText(text, speed = 40) {
   clearInterval(typingTimer);
   speechText.innerText = '';
   let i = 0;
-
   typingTimer = setInterval(() => {
     speechText.innerText += text[i++] ?? '';
     if (i >= text.length) clearInterval(typingTimer);
@@ -153,24 +129,27 @@ function typeText(text, speed = 40) {
 }
 
 /* =========================
-   LOCAL RESPOND (게이지 + 연출)
+   LOCAL RESPOND
 ========================= */
-function localRespond(userText) {
-  const { p, n } = analyze(userText);
+function localRespond(text) {
+  const { p, n } = analyze(text);
 
   if (p > 0) {
-    happy = Math.min(MAX_GAUGE, happy + p * 10);
-    chararararak(negativeEmotions);
+    happy = Math.min(100, happy + p * 10);
     showHappyEffect();
   }
-
   if (n > 0) {
-    sadness = Math.min(MAX_GAUGE, sadness + n * 10);
-    chararararak(positiveEmotions);
+    sadness = Math.min(100, sadness + n * 10);
   }
 
-  happyFill.style.width = happy + '%';
-  sadnessFill.style.width = sadness + '%';
+  overflowFill.style.width = happy + '%';
+  stabilityFill.style.width = sadness + '%';
+
+  if (happy > sadness) {
+    chararararak(negativeEmotions);
+  } else if (sadness > happy) {
+    chararararak(positiveEmotions);
+  }
 
   speech.classList.add('shaking');
   typeText(thinkingTexts[0], 35);
@@ -179,17 +158,17 @@ function localRespond(userText) {
 /* =========================
    API RESPOND
 ========================= */
-async function apiRespond(userText) {
+async function apiRespond(text) {
   if (isThinking) return;
   isThinking = true;
 
-  localRespond(userText);
+  localRespond(text);
 
-  if (happy >= MAX_GAUGE) {
+  if (happy >= REFUSAL_THRESHOLD) {
     setTimeout(() => {
+      coinRejectSound.play();
       speech.classList.remove('shaking');
-      play(coinRejectSound);
-      typeText(refusalTexts[Math.floor(Math.random() * refusalTexts.length)]);
+      typeText(refusalTexts[Math.floor(Math.random()*refusalTexts.length)]);
       isThinking = false;
     }, 600);
     return;
@@ -197,21 +176,17 @@ async function apiRespond(userText) {
 
   try {
     const res = await fetch('/api/respond', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: userText })
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ message: text })
     });
-
     const data = await res.json();
-
     setTimeout(() => {
       speech.classList.remove('shaking');
       typeText(data.reply || '…');
       isThinking = false;
-    }, 900);
-
-  } catch (e) {
-    speech.classList.remove('shaking');
+    }, 800);
+  } catch {
     typeText('말 안 해.');
     isThinking = false;
   }
@@ -221,21 +196,12 @@ async function apiRespond(userText) {
    INPUT
 ========================= */
 input.addEventListener('keydown', e => {
-  if (e.key !== 'Enter') return;
-  e.preventDefault();
-
-  unlockAudio();
-
-  if (!input.value.trim() || isThinking) return;
-
-  if (happy >= MAX_GAUGE) {
-    play(coinRejectSound);
-    typeText(refusalTexts[Math.floor(Math.random() * refusalTexts.length)]);
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    unlockAudio();
+    if (!input.value.trim() || isThinking) return;
+    coinSound.play();
+    apiRespond(input.value.trim());
     input.value = '';
-    return;
   }
-
-  play(coinSound);
-  apiRespond(input.value.trim());
-  input.value = '';
 });
