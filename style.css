@@ -23,12 +23,12 @@ body {
 
 /* CHARACTER STAGE */
 .character-stage {
-  height: 200px;
+  height: 260px;
   background: #e6e6e6;
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  overflow: hidden;
+  overflow: visible;
   border-bottom: 2px solid #aaa;
 }
 
@@ -62,15 +62,27 @@ body {
 /* SPEECH BUBBLE */
 .speech-bubble {
   position: absolute;
-  left: 100%;
-  top: 40px;
-  margin-left: 10px;
-  background: #f4f4f4;
-  border: 2px solid #888;
-  padding: 6px 10px;
+  left: 50%;
+  bottom: 140px;              /* 얼굴 위 */
+  transform: translateX(-50%);
+  background: #fff;
+  border: 2px solid #999;
   border-radius: 6px;
-  font-size: 12px;
-  max-width: 140px;
+  padding: 8px 10px;
+  font-size: 14px;
+  z-index: 3;                 /* 캐릭터보다 위 */
+  max-width: 160px;
+}
+
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px 6px 0 6px;
+  border-style: solid;
+  border-color: #999 transparent transparent transparent;
 }
 
 /* DIALOGUE */
