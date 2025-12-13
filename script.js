@@ -20,7 +20,7 @@ const REFUSAL_THRESHOLD = 100;
 /* =========================
    STATE
 ========================= */
-let overflow = 40;
+let overflow = 0;
 let shuffleTimer = null;
 let typingTimer = null;
 let isThinking = false;
