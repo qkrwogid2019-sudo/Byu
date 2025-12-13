@@ -100,30 +100,39 @@ input {
   font-family: inherit;
 }
 
-/* GAUGE */
-.bars {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 6px;
-}
+/* GAUGE BARS */
 .bar {
   flex: 1;
-  background: #ccc;
+  background: #cfcfcf;
   border: 2px solid #7d7d7d;
-  font-size: 12px;
+  font-size: 11px;
   position: relative;
-  height: 24px;
-  padding-left: 4px;
+  height: 26px;
+  padding-left: 6px;
+  line-height: 22px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
 }
+
 .bar .fill {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
-  opacity: 0.6;
+  opacity: 0.75;
+  z-index: 0;
 }
-.bar.good .fill { background: #7bc96f; }
-.bar.bad .fill { background: #e5533d; }
+
+/* 시스템이 편안할수록 */
+.bar.stability .fill {
+  background: #8fbf9f; /* 차분한 녹색 */
+}
+
+/* 감정이 새어 나올수록 */
+.bar.overflow .fill {
+  background: #d66a5e; /* 불안한 적색 */
+}
+
 
 .status {
   display: flex;
