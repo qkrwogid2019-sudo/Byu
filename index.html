@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,115 +7,68 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="desktop">
-    <div class="window">
-      <!-- TITLE BAR -->
-      <div class="titlebar">
-        <div class="title">Hipster Generator v1.0</div>
-        <div class="win-controls">
-          <button class="win-btn" aria-label="Minimize">—</button>
-          <button class="win-btn" aria-label="Close">×</button>
-        </div>
-      </div>
 
-      <!-- MENU BAR -->
-      <div class="menubar">
-        <span class="menu-item">File</span>
-        <span class="menu-item">Edit</span>
-        <span class="menu-item">Style</span>
-        <span class="menu-item">Help</span>
-      </div>
+<div class="desktop">
+  <div class="window">
 
-      <!-- CONTENT -->
-      <div class="content">
-        <!-- LEFT COLUMN -->
-        <div class="col left">
-          <fieldset class="group">
-            <legend>Base Model</legend>
-            <button class="btn big">Copy</button>
-          </fieldset>
-
-          <fieldset class="group">
-            <legend>Apply Preset</legend>
-            <button class="btn big">Apply<br/>Preset</button>
-          </fieldset>
-        </div>
-
-        <!-- CENTER PREVIEW -->
-        <div class="col center">
-          <div class="preview">
-            <div class="preview-inner">
-              <div class="preview-text">
-                Drag &amp; Drop<br />
-                to spawn more<br />
-                unique<br />
-                individuals
-              </div>
-
-              <!-- ✅ 여기 안에 네 캐릭터 레이어 넣으면 됨 -->
-              <!--
-              <div class="avatar">
-                <img src="img/base.png" class="layer base">
-                <img src="img/angry_01.png" class="layer face" id="faceLayer">
-              </div>
-              -->
-            </div>
-          </div>
-        </div>
-
-        <!-- RIGHT COLUMN -->
-        <div class="col right">
-          <fieldset class="group">
-            <legend>Style Presets</legend>
-
-            <label class="check">
-              <input type="checkbox" />
-              <span>Checked</span>
-            </label>
-
-            <label class="check">
-              <input type="checkbox" />
-              <span>Checked</span>
-            </label>
-
-            <label class="check">
-              <input type="checkbox" checked />
-              <span>Checked</span>
-            </label>
-
-            <label class="check">
-              <input type="checkbox" />
-              <span>Unchecked</span>
-            </label>
-            <fieldset class="group chat">
-  <legend>System Dialogue</legend>
-
-  <div class="chat-log" id="chatLog">
-    <div class="msg system">System ready.</div>
-    <div class="msg system">Awaiting input.</div>
-  </div>
-
-  <div class="chat-input">
-    <input
-      type="text"
-      id="chatInput"
-      placeholder="Type something personal..."
-      autocomplete="off"
-    />
-    <button class="btn send">Send</button>
-  </div>
-</fieldset>
-          </fieldset>
-        </div>
-      </div>
-
-      <!-- STATUS BAR -->
-      <div class="statusbar">
-        <div class="status-cell">Instances: 24</div>
-        <div class="status-cell">Uniqueness: 3%</div>
-        <div class="status-cell">System: Stable <span class="sad">(sadly)</span></div>
+    <!-- TITLE BAR -->
+    <div class="titlebar">
+      <div class="title">Hipster Generator v1.0</div>
+      <div class="win-controls">
+        <button class="win-btn">—</button>
+        <button class="win-btn">×</button>
       </div>
     </div>
+
+    <!-- CHARACTER -->
+    <div class="section character">
+      <div class="preview">
+        <div class="avatar">
+          <!-- 캐릭터 레이어 -->
+          <img src="img/base.png" class="layer base" />
+          <img src="img/angry_01.png" class="layer face" id="faceLayer" />
+        </div>
+      </div>
+    </div>
+
+    <!-- DIALOGUE -->
+    <div class="section dialogue">
+      <div class="section-title">System Dialogue</div>
+
+      <div class="chat-log" id="chatLog">
+        <div class="msg system">System initialized.</div>
+        <div class="msg system">Awaiting input.</div>
+      </div>
+
+      <input
+        id="chatInput"
+        type="text"
+        placeholder="Type something personal..."
+        autocomplete="off"
+      />
+    </div>
+
+    <!-- GAUGE -->
+    <div class="section gauge">
+      <div class="bars">
+        <div class="bar good">
+          GOOD
+          <div class="fill" style="width:20%"></div>
+        </div>
+        <div class="bar bad">
+          BAD
+          <div class="fill" style="width:70%"></div>
+        </div>
+      </div>
+
+      <div class="status">
+        <span>Uniqueness: 3%</span>
+        <span>System: Stable (sadly)</span>
+      </div>
+    </div>
+
   </div>
+</div>
+
 </body>
 </html>
