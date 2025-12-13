@@ -1,106 +1,190 @@
+/* ===== RESET ===== */
+* {
+  box-sizing: border-box;
+}
+
 body {
+  margin: 0;
+  padding: 20px 0;
   background: #111;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   display: flex;
   justify-content: center;
-  padding: 20px;
-  font-family: monospace;
 }
 
+/* ===== DESKTOP WRAPPER ===== */
+.desktop {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* ===== WINDOW ===== */
 .window {
   width: 360px;
-  background: #ddd;
-  border: 2px solid #888;
+  background: #dcdcdc;
+  border: 2px solid #999;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+  overflow: hidden; /* 🔥 캐릭터 탈주 방지 */
 }
 
-/* TITLE BAR */
+/* ===== TITLE BAR ===== */
 .titlebar {
-  background: linear-gradient(#2e5f9e, #1f3f66);
-  color: white;
-  padding: 6px;
+  height: 32px;
+  background: linear-gradient(#3b6ea5, #2c5684);
+  color: #fff;
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  padding: 0 8px;
+  font-size: 13px;
 }
 
-/* CHARACTER STAGE */
+.win-controls {
+  display: flex;
+  gap: 6px;
+}
 
+.win-btn {
+  width: 22px;
+  height: 18px;
+  border-radius: 4px;
+  border: none;
+  background: #eee;
+  font-weight: bold;
+  cursor: default;
+}
+
+/* ===== CHARACTER STAGE ===== */
 .character-stage {
   position: relative;
   height: 260px;
-  overflow: visible;
+  background: #eee;
+  border-bottom: 2px solid #aaa;
+  overflow: hidden; /* 🔥 무대 밖 금지 */
 }
 
+/* ===== AVATAR ===== */
 .avatar {
   position: absolute;
   bottom: 0;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) scale(1.15); /* ← 여기서 캐릭터 크기 조절 */
+  transform-origin: bottom center;
   width: 180px;
+  height: 220px;
   z-index: 2;
 }
 
+/* ===== IMAGE LAYERS ===== */
+.layer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+.emotion {
+  opacity: 0;
+  transition: opacity 0.12s linear;
+}
+
+.emotion.active {
+  opacity: 1;
+}
+
+/* ===== SPEECH BUBBLE ===== */
 .speech-bubble {
   position: absolute;
   left: 50%;
-  bottom: 180px;
+  bottom: 190px; /* ← 말풍선 높이 미세조정 */
   transform: translateX(-50%);
   background: #fff;
   border: 2px solid #999;
-  padding: 8px 10px;
   border-radius: 6px;
-  z-index: 5;          /* 🔥 avatar보다 위 */
+  padding: 6px 10px;
+  font-size: 13px;
+  color: #333;
+  z-index: 5;
+  min-width: 40px;
+  text-align: center;
 }
 
-.speech-bubble p {
-  color: #000;
-  font-size: 14px;
-  margin: 0;
+.speech-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border-right: 2px solid #999;
+  border-bottom: 2px solid #999;
+  transform: translateX(-50%) rotate(45deg);
 }
 
+/* 미세 흔들림 */
+.speech-bubble.shaking {
+  animation: shake 0.15s infinite;
+}
 
-/* DIALOGUE */
-.section {
+@keyframes shake {
+  0% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-1px); }
+  100% { transform: translateX(-50%) translateY(0); }
+}
+
+/* ===== SYSTEM DIALOGUE ===== */
+.section.dialogue {
   padding: 8px;
+  background: #ddd;
+  border-bottom: 2px solid #aaa;
 }
 
 .section-title {
   font-weight: bold;
+  font-size: 13px;
   margin-bottom: 4px;
 }
 
 .chat-log {
-  height: 80px;
   background: #fff;
-  border: 2px solid #aaa;
-  padding: 4px;
+  border: 2px inset #aaa;
+  padding: 6px;
+  height: 80px;
   font-size: 12px;
   overflow-y: auto;
 }
 
-input {
+.msg.system {
+  color: #333;
+}
+
+#chatInput {
   width: 100%;
   margin-top: 6px;
+  padding: 6px;
+  font-size: 13px;
+  border: 2px inset #aaa;
 }
 
-@keyframes jitter {
-  0%   { transform: translateX(-50%) translateY(0); }
-  25%  { transform: translateX(-50%) translateY(-1px); }
-  50%  { transform: translateX(-50%) translateY(1px); }
-  75%  { transform: translateX(-50%) translateY(-1px); }
-  100% { transform: translateX(-50%) translateY(0); }
+/* ===== GAUGE ===== */
+.section.gauge {
+  padding: 8px;
+  background: #d6d6d6;
 }
 
-.speech-bubble.shaking {
-  animation: jitter 0.15s infinite;
-}
-
-/* GAUGE */
 .bar {
   position: relative;
-  height: 20px;
-  margin-top: 6px;
-  background: #ccc;
+  height: 18px;
+  background: #bbb;
+  margin-bottom: 6px;
   font-size: 11px;
-  padding-left: 4px;
+  line-height: 18px;
+  padding-left: 6px;
+  overflow: hidden;
 }
 
 .bar .fill {
@@ -108,14 +192,27 @@ input {
   left: 0;
   top: 0;
   height: 100%;
+  z-index: 0;
 }
 
-.stability .fill {
-  background: #8bc4a1;
-  width: 30%;
+.bar.stability .fill {
+  background: #8bc8a1;
+  width: 20%;
 }
 
-.overflow .fill {
+.bar.overflow .fill {
   background: #d67c73;
   width: 70%;
+}
+
+.bar span {
+  position: relative;
+  z-index: 1;
+}
+
+.status {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-top: 4px;
 }
