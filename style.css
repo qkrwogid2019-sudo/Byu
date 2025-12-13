@@ -109,6 +109,18 @@ input {
   margin-top: 6px;
 }
 
+@keyframes jitter {
+  0%   { transform: translateX(-50%) translateY(0); }
+  25%  { transform: translateX(-50%) translateY(-1px); }
+  50%  { transform: translateX(-50%) translateY(1px); }
+  75%  { transform: translateX(-50%) translateY(-1px); }
+  100% { transform: translateX(-50%) translateY(0); }
+}
+
+.speech-bubble.shaking {
+  animation: jitter 0.15s infinite;
+}
+
 /* GAUGE */
 .bar {
   position: relative;
