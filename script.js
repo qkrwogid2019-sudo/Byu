@@ -52,3 +52,7 @@ function interact() {
     randomFrom(angryFaces) // 마지막은 분노 고정
   );
 }
+
+if (liking >= 1) {
+  gauge.style.animation = "shake 0.4s";
+}
