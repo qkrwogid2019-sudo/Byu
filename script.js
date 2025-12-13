@@ -12,7 +12,8 @@ const input = document.getElementById('chatInput');
 ========================= */
 let shuffleTimer = null;
 let typingTimer = null;
-let overflow = 40; // 시작값 (중요)
+let overflow = 40;        // 시작값
+let isThinking = false;   // 🔥 입력 잠금용
 
 /* =========================
    ASSETS
@@ -38,7 +39,7 @@ const positiveWords = ['좋아','행복','사랑','고마워','괜찮아'];
 const negativeWords = ['싫어','불안','짜증','화나','우울','힘들어'];
 
 /* =========================
-   THINKING TEXTS (쀼 스타일)
+   THINKING TEXTS (쀼)
 ========================= */
 const thinkingTexts = [
   '…',
@@ -70,6 +71,7 @@ function chararararak(group, duration = 700, interval = 120) {
 
   shuffleTimer = setInterval(() => {
     emotions.forEach(e => e.classList.remove('active'));
+
     const candidates = [...emotions].filter(e =>
       group.includes(e.getAttribute('src'))
     );
@@ -84,7 +86,7 @@ function chararararak(group, duration = 700, interval = 120) {
 }
 
 /* =========================
-   TYPE TEXT (타이핑)
+   TYPE TEXT
 ========================= */
 function typeText(text, speed = 40) {
   clearInterval(typingTimer);
@@ -92,15 +94,13 @@ function typeText(text, speed = 40) {
   let i = 0;
 
   typingTimer = setInterval(() => {
-    speechText.innerText += text[i++];
+    speechText.innerText += text[i++] ?? '';
     if (i >= text.length) clearInterval(typingTimer);
   }, speed);
 }
 
 /* =========================
-   RESPOND (연출 전용)
-   - 말하지 않음
-   - 분석 / 표정 / 게이지만
+   RESPOND (연출 ONLY)
 ========================= */
 function respond(userText) {
   const { p, n } = analyze(userText);
@@ -126,26 +126,56 @@ function respond(userText) {
    API RESPOND (실제 발화)
 ========================= */
 async function apiRespond(userText) {
-  // 1️⃣ 연출 먼저
+  if (isThinking) return; // 🔒 중복 입력 방지
+  isThinking = true;
+
+  // 1️⃣ 연출
   respond(userText);
 
-  // 2️⃣ AI 호출
-  const res = await fetch('/api/respond', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: userText })
-  });
+  try {
+    // 2️⃣ AI 호출
+    const res = await fetch('/api/respond', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: userText })
+    });
 
-  const data = await res.json();
+    if (!res.ok) throw new Error('API error');
 
+    const data = await res.json();
 
+    // 3️⃣ 일부러 지연 (쀼는 바로 말 안 함)
+    const delay = 800 + Math.random() * 700;
+
+    setTimeout(() => {
+      speech.classList.remove('shaking');
+
+      // 🔥 응답 거부 구간
+      if (overflow >= 95) {
+        typeText('…');
+      } else {
+        typeText(data.reply);
+      }
+
+      isThinking = false; // 🔓 입력 다시 열기
+    }, delay);
+
+  } catch (err) {
+    speech.classList.remove('shaking');
+    typeText('…지금 말 안 할게.');
+    isThinking = false;
+  }
+}
 
 /* =========================
-   INPUT
+   INPUT (iOS SAFE)
 ========================= */
 input.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && input.value.trim()) {
-    apiRespond(input.value.trim());
-    input.value = '';
+  if (e.key === 'Enter') {
+    e.preventDefault(); // 🔥 iOS 필수
+    if (input.value.trim() && !isThinking) {
+      apiRespond(input.value.trim());
+      input.value = '';
+    }
   }
 });
