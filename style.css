@@ -63,7 +63,7 @@ body {
 .speech-bubble {
   position: absolute;
   left: 50%;
-  bottom: 160px;              /* 얼굴 위 */
+  bottom: 170px;              /* 얼굴 위 */
   transform: translateX(-50%);
   background: #fff;
   border: 2px solid #999;
