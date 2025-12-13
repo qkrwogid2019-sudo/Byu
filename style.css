@@ -43,8 +43,7 @@ body {
 /* =========================
    CHARACTER STAGE
 ========================= */
-STAGE
-========================= */
+
 .character-stage {
   position: relative;
   height: 360px;          /* ⭐️ 말풍선 공간 확보 */
