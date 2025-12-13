@@ -27,15 +27,16 @@ body {
 }
 
 /* 🔴 유리창 영역 (여기만 조절하면 됨) */
+
 .window {
   position: absolute;
-  left: 86px;                /* ← X 위치 */
-  top: 92px;                 /* ← Y 위치 */
-  width: 188px;              /* ← 가로 */
-  height: 188px;             /* ← 세로 */
+  left: 78px;      /* ← 유리창 시작 X */
+  top: 118px;      /* ← 유리창 시작 Y */
+  width: 204px;    /* ← 유리창 가로 */
+  height: 176px;   /* ← 유리창 세로 */
 
-  overflow: hidden;          /* 창 밖은 안 보이게 */
-  pointer-events: none;      /* 클릭 막기 */
+  overflow: hidden;
+  pointer-events: none;
 }
 
 /* 캐릭터 레이어 공통 */
@@ -50,6 +51,6 @@ body {
 
 /* 캐릭터 크기 미세조정 */
 .window .layer {
-  transform: scale(0.85);
+  transform: scale(0.95);
   transform-origin: center;
 }
