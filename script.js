@@ -134,10 +134,12 @@ function typeText(text, speed = 40) {
 function localRespond(text) {
   const { p, n } = analyze(text);
 
+  // === 게이지 증가 ===
   if (p > 0) {
     happy = Math.min(100, happy + p * 10);
     showHappyEffect();
   }
+
   if (n > 0) {
     sadness = Math.min(100, sadness + n * 10);
   }
@@ -145,11 +147,15 @@ function localRespond(text) {
   overflowFill.style.width = happy + '%';
   stabilityFill.style.width = sadness + '%';
 
-  if (happy > sadness) {
+  // === 🔥 표정 결정은 "이번 입력 기준" ===
+  if (n > p) {
+    // 네거티브 입력 → 화난 계열
     chararararak(negativeEmotions);
-  } else if (sadness > happy) {
+  } else if (p > n) {
+    // 긍정 입력 → 사랑 계열
     chararararak(positiveEmotions);
   }
+  // p === n 이면 표정 유지 (일부러 아무 것도 안 함)
 
   speech.classList.add('shaking');
   typeText(thinkingTexts[0], 35);
