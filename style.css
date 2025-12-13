@@ -56,6 +56,11 @@ input {
   font-size: 14px;
 }
 
+input, button {
+  position: relative;
+  z-index: 10;
+}
+
 @keyframes shake {
   0% { transform: translateX(0); }
   25% { transform: translateX(-2px); }
