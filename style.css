@@ -1,79 +1,163 @@
-<!doctype html>
-<html lang="ko">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Emotion Vending Machine v1.0</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+}
 
-<div class="desktop">
-  <div class="window">
+body {
+  margin: 0;
+  background: #111;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
 
-    <!-- TITLE BAR -->
-    <div class="titlebar">
-      <div class="title">Emotion Vending Machine v1.0</div>
-      <div class="win-controls">
-        <button class="win-btn">—</button>
-        <button class="win-btn">×</button>
-      </div>
-    </div>
+.desktop {
+  width: 360px;
+}
 
-    <!-- CHARACTER STAGE -->
-    <div class="character-stage">
-      <div class="avatar">
+.window {
+  background: #ddd;
+  border: 2px solid #888;
+}
 
-        <img src="img/base.png" class="layer base" />
+/* TITLE BAR */
+.titlebar {
+  background: linear-gradient(#3a6ea5, #2f5f94);
+  color: #fff;
+  padding: 6px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-        <!-- 감정 레이어 -->
-        <img src="img/angry_01.png" class="layer emotion active" />
-        <img src="img/angry_02.png" class="layer emotion" />
-        <img src="img/angry_03.png" class="layer emotion" />
-        <img src="img/angry_04.png" class="layer emotion" />
+.win-btn {
+  width: 26px;
+  height: 22px;
+}
 
-        <img src="img/love_01.png" class="layer emotion" />
-        <img src="img/love_02.png" class="layer emotion" />
-        <img src="img/love_03.png" class="layer emotion" />
-        <img src="img/love_04.png" class="layer emotion" />
+/* CHARACTER STAGE */
+.character-stage {
+  position: relative;
+  height: 280px;
+  background: #eee;
+  border-bottom: 2px solid #999;
+  overflow: hidden;
+}
 
-        <!-- 말풍선 -->
-        <div class="speech-bubble" id="speech">
-          <p id="speechText">…</p>
-        </div>
+.avatar {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 220px;
+}
 
-      </div>
-    </div>
+.avatar img {
+  width: 100%;
+  display: block;
+}
 
-    <!-- SYSTEM DIALOGUE -->
-    <div class="section dialogue">
-      <div class="section-title">System Dialogue</div>
-      <div class="chat-log">
-        System initialized.<br/>
-        Awaiting input.
-      </div>
-      <input id="chatInput" type="text" placeholder="Type something personal..." />
-    </div>
+.layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
 
-    <!-- GAUGE -->
-    <div class="section gauge">
-      <div class="bar stability">
-        STABILITY
-        <div class="fill" id="stabilityFill" style="width:20%"></div>
-      </div>
-      <div class="bar overflow">
-        AFFECT OVERFLOW
-        <div class="fill" id="overflowFill" style="width:70%"></div>
-      </div>
-      <div class="status">
-        <span>are you happy...?</span>
-        <span>System: Operational</span>
-      </div>
-    </div>
+.layer.base {
+  opacity: 1;
+  position: relative;
+}
 
-  </div>
-</div>
+.layer.emotion.active {
+  opacity: 1;
+}
 
-<script src="script.js"></script>
-</body>
-</html>
+/* SPEECH */
+.speech-bubble {
+  position: absolute;
+  bottom: 210px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 2px solid #888;
+  border-radius: 6px;
+  padding: 10px 14px;
+  min-width: 260px;
+  max-width: 320px;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+  z-index: 10;
+}
+
+.speech-bubble.shaking {
+  animation: shake 0.12s infinite;
+}
+
+@keyframes shake {
+  0% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(1px); }
+  100% { transform: translateX(-50%) translateY(0); }
+}
+
+/* SECTIONS */
+.section {
+  padding: 8px 10px;
+  font-size: 12px;
+  line-height: 1.6;
+  border-top: 2px solid #999;
+}
+
+.section-title {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.chat-log {
+  background: #fff;
+  border: 2px inset #aaa;
+  padding: 6px;
+  height: 60px;
+  overflow-y: auto;
+  margin-bottom: 6px;
+}
+
+input {
+  width: 100%;
+  padding: 6px;
+  font-size: 13px;
+}
+
+/* GAUGE */
+.bar {
+  background: #ccc;
+  margin-bottom: 6px;
+  position: relative;
+  height: 22px;
+  font-size: 11px;
+  padding-left: 6px;
+  line-height: 22px;
+}
+
+.bar .fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 0;
+}
+
+.bar.stability .fill {
+  background: #9fd3a8;
+}
+
+.bar.overflow .fill {
+  background: #e08a7f;
+}
+
+.status {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+}
