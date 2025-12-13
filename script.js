@@ -87,7 +87,7 @@ function respond(text) {
 /* ⌨️ 입력 */
 input.addEventListener('keydown', e => {
   if (e.key === 'Enter' && input.value.trim()) {
-    respond(input.value.trim());
+    apirespond(input.value.trim());
     input.value = '';
   }
 });
