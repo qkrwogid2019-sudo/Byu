@@ -15,7 +15,7 @@ const stabilityFill = document.getElementById('stabilityFill');
 /* =========================
    CONSTANTS
 ========================= */
-const REFUSAL_THRESHOLD = 100;
+
 
 /* =========================
    STATE
@@ -192,19 +192,23 @@ function typeText(text, speed = 40) {
 function localRespond(userText) {
   const { p, n } = analyze(userText);
 
-  if (p > n) {
-  chararararak(negativeEmotions);
-} else if (n > p) {
-  chararararak(positiveEmotions);
-}
-  // 게이지 반영
+  if (p > 0) {
+    happy = Math.min(100, happy + p * 10);
+    chararararak(negativeEmotions);
+    showHappyEffect();
+  }
+
+  if (n > 0) {
+    sadness = Math.min(100, sadness + n * 10);
+    chararararak(positiveEmotions);
+  }
+
   overflowFill.style.width = happy + '%';
   stabilityFill.style.width = sadness + '%';
 
   speech.classList.add('shaking');
   typeText(thinkingTexts[0], 35);
 }
-
 /* =========================
    API RESPOND
 ========================= */
@@ -259,12 +263,13 @@ input.addEventListener('keydown', e => {
     if (!input.value.trim() || isThinking) return;
 
     // 이미 거부 상태
-    if (overflow >= REFUSAL_THRESHOLD) {
-      playCoinRejectSound();
-      typeText(refusalTexts[Math.floor(Math.random() * refusalTexts.length)], 30);
-      input.value = '';
-      return;
-    }
+    // INPUT 부분
+if (happy >= REFUSAL_THRESHOLD) {
+  playCoinRejectSound();
+  typeText(refusalTexts[Math.floor(Math.random() * refusalTexts.length)], 30);
+  input.value = '';
+  return;
+}
 
     playCoinSound();
     apiRespond(input.value.trim());
