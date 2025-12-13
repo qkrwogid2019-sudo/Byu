@@ -3,22 +3,26 @@
 ========================= */
 * {
   box-sizing: border-box;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont;
 }
 
 body {
- body {
   margin: 0;
   background-color: #0e0e0e;
 
+  /* 바깥 배경 도트 */
   background-image:
     radial-gradient(circle at 4px 4px, #ff6fae 1px, transparent 1px),
     radial-gradient(circle at 12px 12px, #6fd3ff 1px, transparent 1px);
-
   background-size: 16px 16px;
-}
+
+  display: flex;
+  justify-content: center;
+  padding: 20px;
 }
 
+/* =========================
+   APP FRAME
+========================= */
 .desktop {
   width: 360px;
 }
@@ -48,43 +52,34 @@ body {
 /* =========================
    CHARACTER STAGE
 ========================= */
-
-/* =========================
-   CHARACTER STAGE (배경 패턴 포함)
-========================= */
-.character-stage{
+.character-stage {
   position: relative;
   height: 360px;
-  .character-stage {
-  background: transparent; /* 🔥 핵심 */
-}
   border-bottom: 2px solid #999;
   overflow: hidden;
   padding-top: 80px;
+
+  /* ❗ 절대 흰 배경 주지 마 */
+  background: transparent;
 }
 
-/* 🔥 캔 도트 패턴 레이어 */
-.character-stage::before{
-  content:"";
-  position:absolute;
-  inset:0;
+/* =========================
+   CAN DOT PATTERN (BACKGROUND)
+========================= */
+.character-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
   z-index: 0;
   opacity: 0.35;
   pointer-events: none;
 
-  /* “캔” 픽셀 아이콘을 SVG로 타일링 */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Crect width='56' height='56' fill='%23eeeeee'/%3E%3C!-- tile dots --%3E%3Crect x='0' y='0' width='56' height='56' fill='none'/%3E%3C!-- can 1 --%3E%3Cg shape-rendering='crispEdges'%3E%3Crect x='12' y='12' width='18' height='28' fill='%2395d5ff'/%3E%3Crect x='12' y='12' width='18' height='4' fill='%2369bfe8'/%3E%3Crect x='12' y='36' width='18' height='4' fill='%2369bfe8'/%3E%3Crect x='14' y='18' width='3' height='18' fill='%23c9f0ff'/%3E%3Crect x='18' y='22' width='10' height='10' fill='%23ffffff'/%3E%3Crect x='18' y='22' width='10' height='2' fill='%23ff6fae'/%3E%3Crect x='18' y='26' width='10' height='2' fill='%23ff6fae'/%3E%3Crect x='18' y='30' width='10' height='2' fill='%23ff6fae'/%3E%3Crect x='12' y='12' width='18' height='28' fill='none' stroke='%23888888' stroke-width='2'/%3E%3C/g%3E%3C!-- can 2 (offset) --%3E%3Cg shape-rendering='crispEdges'%3E%3Crect x='32' y='22' width='16' height='24' fill='%23ffd36f'/%3E%3Crect x='32' y='22' width='16' height='4' fill='%23f2b64f'/%3E%3Crect x='32' y='42' width='16' height='4' fill='%23f2b64f'/%3E%3Crect x='34' y='28' width='3' height='14' fill='%23fff1c9'/%3E%3Crect x='37' y='31' width='9' height='8' fill='%23ffffff'/%3E%3Crect x='37' y='31' width='9' height='2' fill='%236fd3ff'/%3E%3Crect x='37' y='35' width='9' height='2' fill='%236fd3ff'/%3E%3Crect x='32' y='22' width='16' height='24' fill='none' stroke='%23888888' stroke-width='2'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Crect width='56' height='56' fill='transparent'/%3E%3Cg shape-rendering='crispEdges'%3E%3Crect x='10' y='12' width='18' height='28' fill='%2395d5ff'/%3E%3Crect x='10' y='12' width='18' height='4' fill='%2369bfe8'/%3E%3Crect x='10' y='36' width='18' height='4' fill='%2369bfe8'/%3E%3Crect x='12' y='18' width='4' height='18' fill='%23c9f0ff'/%3E%3Crect x='16' y='22' width='8' height='10' fill='%23ffffff'/%3E%3Crect x='16' y='22' width='8' height='2' fill='%23ff6fae'/%3E%3Crect x='16' y='26' width='8' height='2' fill='%23ff6fae'/%3E%3Crect x='16' y='30' width='8' height='2' fill='%23ff6fae'/%3E%3Crect x='10' y='12' width='18' height='28' fill='none' stroke='%23888888' stroke-width='2'/%3E%3C/g%3E%3C/svg%3E");
   background-size: 56px 56px;
   background-repeat: repeat;
-
-  /* 도트 느낌 살리기 */
   image-rendering: pixelated;
 }
 
-/* 🔥 위에 올라오는 레이어들은 z-index 올려주기 */
-#effectLayer{ position:absolute; top:16px; right:16px; z-index: 100; }
-.avatar{ position: relative; z-index: 10; }
-.speech-bubble{ z-index: 50; }
 /* =========================
    EFFECT LAYER
 ========================= */
@@ -92,8 +87,8 @@ body {
   position: absolute;
   top: 16px;
   right: 16px;
-  pointer-events: none;
   z-index: 100;
+  pointer-events: none;
 }
 
 .happy-effect {
@@ -104,31 +99,22 @@ body {
 }
 
 @keyframes floatUp {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  20% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
+  0% { opacity: 0; transform: translateY(10px); }
+  20% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-20px); }
 }
 
 /* =========================
    AVATAR
 ========================= */
-
- .avatar {
+.avatar {
   position: relative;
-  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 220px;
   z-index: 10;
 }
+
 .avatar img {
   width: 100%;
   display: block;
@@ -158,16 +144,16 @@ body {
 }
 
 /* =========================
-   SPEECH BUBBLE
-========================= */
-/* =========================
    SPEECH BUBBLE (DOT FONT)
 ========================= */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 .speech-bubble {
   position: absolute;
   top: -58px;
   left: 50%;
   transform: translateX(-50%);
+  z-index: 50;
 
   background: #fff;
   border: 2px solid #444;
@@ -181,9 +167,7 @@ body {
   font-size: 10px;
   line-height: 1.6;
   letter-spacing: -0.5px;
-
   text-align: center;
-  z-index: 50;
 }
 
 .speech-bubble.shaking {
@@ -227,7 +211,7 @@ input {
 }
 
 /* =========================
-   GAUGE
+   GAUGES
 ========================= */
 .bar {
   background: #ccc;
