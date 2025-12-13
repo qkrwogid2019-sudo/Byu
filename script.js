@@ -6,6 +6,11 @@ let overflow = 70;
 
 /* 표정 랜덤 스위칭 */
 
+chararararak(
+  600 + overflow * 5,     // duration
+  Math.max(50, 150 - overflow) // interval
+);
+
 let shuffleTimer = null;
 
 function chararararak(duration = 800, interval = 120) {
