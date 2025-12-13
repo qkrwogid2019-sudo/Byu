@@ -158,23 +158,29 @@ body {
 /* =========================
    SPEECH BUBBLE
 ========================= */
+/* =========================
+   SPEECH BUBBLE (DOT FONT)
+========================= */
 .speech-bubble {
   position: absolute;
-  top: -58px;          /* 🔥 캐릭터 머리 위 */
+  top: -58px;
   left: 50%;
   transform: translateX(-50%);
 
   background: #fff;
-  border: 2px solid #888;
-  border-radius: 6px;
-  padding: 10px 14px;
+  border: 2px solid #444;
+  border-radius: 4px;
+  padding: 12px 14px;
 
   min-width: 260px;
   max-width: 320px;
-  font-size: 13px;
-  line-height: 1.5;
-  text-align: center;
 
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  line-height: 1.6;
+  letter-spacing: -0.5px;
+
+  text-align: center;
   z-index: 50;
 }
 
