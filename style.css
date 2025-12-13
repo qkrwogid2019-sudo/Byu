@@ -1,183 +1,125 @@
-/* RESET */
-* { box-sizing: border-box; }
 body {
-  margin: 0;
-  background: #1a1a1a;
-  font-family: "MS Sans Serif", Tahoma, system-ui, sans-serif;
-  color: #111;
+  background: #111;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  font-family: monospace;
 }
 
-/* CENTER */
-.desktop {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 16px;
-}
-
-/* WINDOW */
 .window {
-  width: 420px;
-  background: #dcdcdc;
-  border: 2px solid #9b9b9b;
-  box-shadow:
-    0 0 0 1px #ffffff inset,
-    0 10px 30px rgba(0,0,0,.4);
+  width: 360px;
+  background: #ddd;
+  border: 2px solid #888;
 }
 
 /* TITLE BAR */
 .titlebar {
-  background: linear-gradient(#2d5f92, #234c76);
+  background: linear-gradient(#2e5f9e, #1f3f66);
   color: white;
-  padding: 8px;
+  padding: 6px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-}
-.title {
-  font-weight: bold;
-}
-.win-btn {
-  width: 26px;
-  height: 22px;
-  border: 2px solid #dcdcdc;
-  background: #eee;
-  margin-left: 4px;
 }
 
-/* SECTIONS */
-.section {
-  padding: 12px;
-  border-top: 2px solid #bdbdbd;
-}
-
-.section-title {
-  font-weight: bold;
-  margin-bottom: 6px;
-}
-
-/* CHARACTER */
-
+/* CHARACTER STAGE */
 .character-stage {
-  position: relative;
   height: 200px;
   background: #e6e6e6;
-  border-bottom: 2px solid #aaa;
-
   display: flex;
-  align-items: flex-end;
   justify-content: center;
-
+  align-items: flex-end;
   overflow: hidden;
+  border-bottom: 2px solid #aaa;
 }
+
+/* AVATAR */
 .avatar {
   position: relative;
   width: 140px;
 }
 
-.avatar img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-}
-
-.character-row {
-  position: relative;
-  height: 180px;      /* 캐릭터 영역 높이 고정 */
-}
-
-.speech-bubble {
-  position: absolute;
-  right: -140px;
-  top: 40px;
-
-  background: #f5f5f5;
-  border: 2px solid #888;
-  border-radius: 6px;
-  padding: 6px 10px;
-  font-size: 12px;
-  max-width: 140px;
-  z-index: 5;
-}
-
-.speech-bubble::after {
-  content: "";
-  position: absolute;
-  left: -6px;
-  top: 12px;
-
-  border-top: 6px solid transparent;
-  border-bottom: 6px solid transparent;
-  border-right: 6px solid #888;
-}
-
 .layer {
   position: absolute;
-  bottom: 0;              /* 🔥 무조건 바닥 기준 */
   left: 0;
+  bottom: 0;
   width: 100%;
-  height: auto;
-  image-rendering: pixelated;
 }
-  
 
+.base {
+  z-index: 1;
+}
+
+.emotion {
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.emotion.active {
+  opacity: 1;
+}
+
+/* SPEECH BUBBLE */
+.speech-bubble {
+  position: absolute;
+  left: 100%;
+  top: 40px;
+  margin-left: 10px;
+  background: #f4f4f4;
+  border: 2px solid #888;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  max-width: 140px;
+}
 
 /* DIALOGUE */
-.chat-log {
-  height: 120px;
-  background: #efefef;
-  border: 2px solid #8c8c8c;
-  padding: 6px;
-  overflow-y: auto;
-  font-size: 14px;
-  margin-bottom: 6px;
+.section {
+  padding: 8px;
 }
-.msg.system { color: #333; }
-.msg.user { font-weight: bold; }
+
+.section-title {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.chat-log {
+  height: 80px;
+  background: #fff;
+  border: 2px solid #aaa;
+  padding: 4px;
+  font-size: 12px;
+  overflow-y: auto;
+}
 
 input {
   width: 100%;
-  padding: 6px;
-  border: 2px solid #7d7d7d;
-  font-family: inherit;
+  margin-top: 6px;
 }
 
-/* GAUGE BARS */
+/* GAUGE */
 .bar {
-  flex: 1;
-  background: #cfcfcf;
-  border: 2px solid #7d7d7d;
-  font-size: 11px;
   position: relative;
-  height: 26px;
-  padding-left: 6px;
-  line-height: 22px;
-  font-weight: bold;
-  letter-spacing: 0.5px;
+  height: 20px;
+  margin-top: 6px;
+  background: #ccc;
+  font-size: 11px;
+  padding-left: 4px;
 }
 
 .bar .fill {
   position: absolute;
-  top: 0;
   left: 0;
+  top: 0;
   height: 100%;
-  opacity: 0.75;
-  z-index: 0;
 }
 
-/* 시스템이 편안할수록 */
-.bar.stability .fill {
-  background: #8fbf9f; /* 차분한 녹색 */
+.stability .fill {
+  background: #8bc4a1;
+  width: 30%;
 }
 
-/* 감정이 새어 나올수록 */
-.bar.overflow .fill {
-  background: #d66a5e; /* 불안한 적색 */
-}
-
-
-.status {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
+.overflow .fill {
+  background: #d67c73;
+  width: 70%;
 }
