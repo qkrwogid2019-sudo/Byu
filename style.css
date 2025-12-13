@@ -55,7 +55,9 @@ body {
 .character-stage{
   position: relative;
   height: 360px;
-  background: #eee;
+  .character-stage {
+  background: transparent; /* 🔥 핵심 */
+}
   border-bottom: 2px solid #999;
   overflow: hidden;
   padding-top: 80px;
