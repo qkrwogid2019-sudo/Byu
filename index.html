@@ -2,26 +2,22 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>BBU</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claw Emotion Machine</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<div id="ui">
-  <div class="label">좋음 게이지</div>
-  <div class="gauge">
-    <div class="fill" id="likeGauge"></div>
+  <div class="machine">
+    <!-- 인형뽑기 기계 프레임 -->
+    <img src="img/machine.png" class="machine-frame" alt="machine" />
+
+    <!-- 유리창 (캐릭터 영역) -->
+    <div class="window">
+      <img src="img/base.png" class="layer base" />
+      <img src="img/angry_01.png" class="layer face" id="faceLayer" />
+    </div>
   </div>
-</div>
 
-<div id="character">
-  <img src="img/base.png" class="layer base">
-  <img src="img/angry_01.png" class="layer face" id="face">
-</div>
-
-<input id="userInput" placeholder="말 걸어봐…" />
-<button onclick="interact()">전달</button>
-
-<script src="script.js"></script>
 </body>
 </html>
