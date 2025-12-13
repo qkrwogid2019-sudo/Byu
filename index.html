@@ -20,55 +20,52 @@
       </div>
     </div>
 
-    <!-- DISPLAY -->
-    <div class="display-panel">
-     
-      <!-- CHARACTER STAGE -->
-<div class="character-stage">
-  <div class="avatar">
-    <img src="img/base.png" class="layer" />
-    <img src="img/angry_01.png" class="layer emotion" />
+    <!-- CHARACTER STAGE -->
+    <div class="character-stage">
+      <div class="avatar">
 
-    <div class="speech-bubble" id="speech">
-      <p>…</p>
+        <img src="img/base.png" class="layer base" />
+
+        <!-- 감정 레이어들 -->
+        <img src="img/angry_01.png" class="layer emotion active" />
+        <img src="img/angry_02.png" class="layer emotion" />
+        <img src="img/angry_03.png" class="layer emotion" />
+        <img src="img/angry_04.png" class="layer emotion" />
+        <img src="img/love_01.png" class="layer emotion" />
+        <img src="img/love_02.png" class="layer emotion" />
+        <img src="img/love_03.png" class="layer emotion" />
+        <img src="img/love_04.png" class="layer emotion" />
+
+        <!-- 말풍선 -->
+        <div class="speech-bubble" id="speech">
+          <span id="speechText">…</span>
+        </div>
+
+      </div>
     </div>
-  </div>
-</div>
 
-<!-- SYSTEM DIALOGUE -->
-<div class="section dialogue">
-  <div class="section-title">System Dialogue</div>
-
-  <div class="chat-log" id="chatLog">
-    <div class="msg system">System initialized.</div>
-    <div class="msg system">Awaiting input.</div>
-  </div>
-
-  <input
-    id="chatInput"
-    type="text"
-    placeholder="Type something personal..."
-    autocomplete="off"
-  />
-</div>
-    
+    <!-- SYSTEM DIALOGUE -->
+    <div class="section dialogue">
+      <div class="section-title">System Dialogue</div>
+      <div class="chat-log" id="chatLog">
+        <div class="msg system">System initialized.</div>
+        <div class="msg system">Awaiting input.</div>
+      </div>
+      <input id="chatInput" type="text" placeholder="Type something personal..." />
+    </div>
 
     <!-- GAUGE -->
     <div class="section gauge">
-      <div class="bars">
-        <div class="bar stability">
-          STABILITY
-          <div class="fill" id="stabilityFill" style="width:20%"></div>
-        </div>
-
-        <div class="bar overflow">
-          AFFECT OVERFLOW
-          <div class="fill" id="overflowFill" style="width:70%"></div>
-        </div>
+      <div class="bar stability">
+        STABILITY
+        <div class="fill" id="stabilityFill"></div>
       </div>
-
+      <div class="bar overflow">
+        AFFECT OVERFLOW
+        <div class="fill" id="overflowFill"></div>
+      </div>
       <div class="status">
-        <span>are you happy...?</span>
+        <span id="systemHint">are you happy...?</span>
         <span>System: Operational</span>
       </div>
     </div>
@@ -76,5 +73,6 @@
   </div>
 </div>
 
+<script src="script.js"></script>
 </body>
 </html>
