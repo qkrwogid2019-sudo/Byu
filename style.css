@@ -1,70 +1,55 @@
-#ui {
-  width: 300px;
-  margin-top: 20px;
-}
-
-.label {
-  font-size: 12px;
-  letter-spacing: 1px;
-  margin-bottom: 6px;
-}
-
-.gauge {
-  width: 100%;
-  height: 16px;
-  background: #222;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: inset 0 0 6px rgba(0,0,0,0.6);
-}
-
-.fill {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(
-    90deg,
-    #ff7a7a,
-    #ffd36a,
-    #7affb2
-  );
-  transition: width 0.4s ease;
+/* 기본 리셋 */
+* {
+  box-sizing: border-box;
 }
 
 body {
+  margin: 0;
+  background: #111;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  margin-top: 40px;
+  height: 100vh;
+  font-family: monospace;
 }
 
-#character {
+/* 인형뽑기 기계 전체 */
+.machine {
   position: relative;
-  width: 300px;
+  width: 360px;              /* 🔥 전체 크기 */
 }
 
+/* 프레임 이미지 */
+.machine-frame {
+  width: 100%;
+  display: block;
+  image-rendering: pixelated;
+}
+
+/* 🔴 유리창 영역 (여기만 조절하면 됨) */
+.window {
+  position: absolute;
+  left: 86px;                /* ← X 위치 */
+  top: 92px;                 /* ← Y 위치 */
+  width: 188px;              /* ← 가로 */
+  height: 188px;             /* ← 세로 */
+
+  overflow: hidden;          /* 창 밖은 안 보이게 */
+  pointer-events: none;      /* 클릭 막기 */
+}
+
+/* 캐릭터 레이어 공통 */
 .layer {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
 }
 
-input {
-  margin-top: 16px;
-  width: 300px;
-  padding: 8px;
-  font-size: 14px;
-}
-
-input, button {
-  position: relative;
-  z-index: 10;
-}
-
-@keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-2px); }
-  50% { transform: translateX(2px); }
-  75% { transform: translateX(-2px); }
-  100% { transform: translateX(0); }
+/* 캐릭터 크기 미세조정 */
+.window .layer {
+  transform: scale(0.85);
+  transform-origin: center;
 }
