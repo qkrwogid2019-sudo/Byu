@@ -28,7 +28,7 @@ body {
 }
 
 .window {
-  background: #ddd;
+  background: transparent;   /* 🔥 핵심 */
   border: 2px solid #888;
 }
 
@@ -59,6 +59,8 @@ body {
   overflow: hidden;
   padding-top: 80px;
 
+  background-color: rgba(240,240,240,0.85); /* ⭐️ 살짝 반투명 패널 */
+}
   /* ❗ 절대 흰 배경 주지 마 */
   background: transparent;
 }
