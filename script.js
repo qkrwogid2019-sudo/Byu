@@ -36,7 +36,7 @@ const positiveEmotions = [
 /* =========================
    WORDS
 ========================= */
-const positiveWords = ['좋아','안아','뽀뽀','키스''행복','사랑','고마워','괜찮아'];
+const positiveWords = ['좋아','안아','뽀뽀','키스','행복','사랑','고마워','괜찮아'];
 const negativeWords = ['싫어','불안','짜증','화나','우울','힘들어'];
 
 /* =========================
@@ -109,30 +109,19 @@ function showHappyEffect() {
 function respond(userText) {
   const { p, n } = analyze(userText);
 
-  // 🔥 이미 거부 상태
-  if (overflow >= REFUSAL_THRESHOLD) {
-    speech.classList.add('shaking');
-    const refusal =
-      refusalTexts[Math.floor(Math.random() * refusalTexts.length)];
-    typeText(refusal, 30);
-    return;
+  if (p > n) {
+    overflow = Math.min(REFUSAL_THRESHOLD, overflow + 15);
+    chararararak(negativeEmotions);
+    showHappyEffect();
+  } else {
+    overflow = Math.max(0, overflow - 5);
+    chararararak(positiveEmotions);
   }
-
- if (p > n) {
-  overflow = Math.min(REFUSAL_THRESHOLD, overflow + 15);
-  chararararak(negativeEmotions);
-  showHappyEffect(); // ⭐ 여기
-} else {
-  overflow = Math.max(0, overflow - 5);
-  chararararak(positiveEmotions);
-}
 
   overflowFill.style.width = overflow + '%';
 
   speech.classList.add('shaking');
-  const thinking =
-    thinkingTexts[Math.floor(Math.random() * thinkingTexts.length)];
-  typeText(thinking, 35);
+  typeText(thinkingTexts[0], 35);
 }
 
 /* =========================
@@ -142,55 +131,39 @@ async function apiRespond(userText) {
   if (isThinking) return;
   isThinking = true;
 
-  // 🔥 먼저 연출
   respond(userText);
 
-  // ❌ 빨간 게이지 꽉 찼으면 AI 호출 금지
- if (overflow >= REFUSAL_THRESHOLD) {
-  setTimeout(() => {
-    speech.classList.remove('shaking');
-    const refusal =
-      refusalTexts[Math.floor(Math.random() * refusalTexts.length)];
-    typeText(refusal, 30);
-    isThinking = false;
-  }, 600);
-  return;
-}
-
   try {
+    if (overflow >= REFUSAL_THRESHOLD) {
+      await new Promise(r => setTimeout(r, 600));
+      speech.classList.remove('shaking');
+      typeText(
+        refusalTexts[Math.floor(Math.random() * refusalTexts.length)],
+        30
+      );
+      return;
+    }
+
     const res = await fetch('/api/respond', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: userText })
     });
 
-    if (!res.ok) throw new Error('API error');
-
     const data = await res.json();
 
-    const delay = 800 + Math.random() * 700;
+    await new Promise(r => setTimeout(r, 800 + Math.random() * 700));
 
-    setTimeout(() => {
-      speech.classList.remove('shaking');
-      typeText(data.reply);
-      isThinking = false;
-    }, delay);
+    speech.classList.remove('shaking');
+    typeText(data.reply || '…');
 
   } catch (err) {
     speech.classList.remove('shaking');
-    typeText('…지금 말 안 할게.');
-    isThinking = false;
+    typeText('말 안 해');
   } finally {
-    // 🔥 무조건 락 해제
-    isThinking = false;
+    isThinking = false; // 🔒🔓 여기만!
   }
 }
-const refusalTexts = [
-  '…',
-  '그만.',
-  '여기까지.',
-  '말 안 해.',
-];
 /* =========================
    INPUT (iOS SAFE)
 ========================= */
