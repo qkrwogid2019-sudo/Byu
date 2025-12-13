@@ -91,12 +91,13 @@ body {
   opacity: 0;
 }
 
-.layer.emotion {
-  opacity: 0;
+.layer.base {
+  opacity: 1; /* ⭐ 기본 얼굴은 항상 보임 */
 }
 
 .layer.emotion.active {
   opacity: 1;
+}
 }
 /* SPEECH */
 .speech-bubble {
