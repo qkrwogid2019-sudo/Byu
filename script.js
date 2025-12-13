@@ -61,25 +61,32 @@ function analyze(text) {
 /* =========================
    CHARARARAK (표정 셔플)
 ========================= */
-function chararararak(group, duration = 700, interval = 120) {
-  let elapsed = 0;
+function chararararak(group, interval = 120, loops = 2) {
   clearInterval(shuffleTimer);
 
-  playEmotionSound(); // ⭐ 시작할 때 한 번
+  const candidates = [...emotions].filter(e =>
+    group.includes(e.getAttribute('src'))
+  );
+
+  if (!candidates.length) return;
+
+  let index = 0;
+  let count = 0;
+  const totalSteps = candidates.length * loops;
 
   shuffleTimer = setInterval(() => {
+    // 전부 끄고
     emotions.forEach(e => e.classList.remove('active'));
 
-    const candidates = [...emotions].filter(e =>
-      group.includes(e.getAttribute('src'))
-    );
-    if (!candidates.length) return;
+    // 현재 인덱스 켜기
+    candidates[index].classList.add('active');
 
-    candidates[Math.floor(Math.random() * candidates.length)]
-      .classList.add('active');
+    index = (index + 1) % candidates.length;
+    count++;
 
-    elapsed += interval;
-    if (elapsed >= duration) clearInterval(shuffleTimer);
+    if (count >= totalSteps) {
+      clearInterval(shuffleTimer);
+    }
   }, interval);
 }
 
