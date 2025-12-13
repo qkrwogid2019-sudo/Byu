@@ -79,7 +79,9 @@ body {
   background-repeat: repeat;
   image-rendering: pixelated;
 }
-
+.character-stage > div {
+  background: transparent !important;
+}
 /* =========================
    EFFECT LAYER
 ========================= */
