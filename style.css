@@ -43,12 +43,15 @@ body {
 /* =========================
    CHARACTER STAGE
 ========================= */
+STAGE
+========================= */
 .character-stage {
   position: relative;
-  height: 280px;
+  height: 360px;          /* ⭐️ 말풍선 공간 확보 */
   background: #eee;
   border-bottom: 2px solid #999;
-  overflow: visible; /* 🔥 핵심 */
+  overflow: hidden;
+  padding-top: 80px;      /* ⭐️ 말풍선 전용 여백 */
 }
 
 /* =========================
