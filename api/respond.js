@@ -20,8 +20,8 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           model: 'gpt-4o-mini',
-          temperature: 0.7,        // 🔥 헛소리 줄이고 캐릭터 고정
-          max_tokens: 100,         // 🔥 짧은 대사 유지
+          temperature: 0.8,        // 🔥 헛소리 줄이고 캐릭터 고정
+          max_tokens: 160,         // 🔥 짧은 대사 유지
           messages: [
             {
               role: 'system',
