@@ -1,58 +1,46 @@
-const loveFaces = [
-  "img/love_01.png",
-  "img/love_02.png",
-  "img/love_03.png",
-  "img/love_04.png"
-];
+const input = document.getElementById("chatInput");
+const log = document.getElementById("chatLog");
+const face = document.getElementById("faceLayer");
 
-const angryFaces = [
-  "img/angry_01.png",
-  "img/angry_02.png",
-  "img/angry_03.png",
-  "img/angry_04.png"
-];
+let badLevel = 70;
+let goodLevel = 20;
 
-let liking = 0;
-const face = document.getElementById("face");
-const gauge = document.getElementById("likeGauge");
+input.addEventListener("keydown", (e) => {
+  if (e.key !== "Enter") return;
 
-function randomFrom(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
+  const text = input.value.trim();
+  if (!text) return;
+
+  addLog("user", text);
+  input.value = "";
+
+  addLog("system", "Processing affect...");
+
+  const isPositive = /좋아|사랑|행복|고마워|기뻐|love|happy|thanks/i.test(text);
+
+  setTimeout(() => {
+    if (isPositive) {
+      badLevel = Math.min(100, badLevel + 10);
+      face.src = "img/angry_01.png";
+      addLog("system", "Affect overflow detected.");
+    } else {
+      goodLevel = Math.min(100, goodLevel + 3);
+      addLog("system", "System remains stable.");
+    }
+
+    updateGauge();
+  }, 600);
+});
+
+function addLog(type, text) {
+  const div = document.createElement("div");
+  div.className = "msg " + type;
+  div.textContent = text;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
 }
 
 function updateGauge() {
-  gauge.style.width = `${liking * 100}%`;
-}
-function flashFaces(faceList, duration = 500, finalFace) {
-  const interval = 80;
-  let elapsed = 0;
-
-  const flicker = setInterval(() => {
-    face.src = randomFrom(faceList);
-    elapsed += interval;
-
-    if (elapsed >= duration) {
-      clearInterval(flicker);
-      face.src = finalFace;
-    }
-  }, interval);
-}
-
-function interact() {
-  const text = document.getElementById("userInput").value;
-
-  // 말 걸면 무조건 호감 증가
-  liking = Math.min(1, liking + 0.15 + Math.random() * 0.2);
-  updateGauge();
-
-  // 내부: 사랑 표정 촤라라락
-  flashFaces(
-    loveFaces,
-    600,
-    randomFrom(angryFaces) // 마지막은 분노 고정
-  );
-}
-
-if (liking >= 1) {
-  gauge.style.animation = "shake 0.4s";
+  document.querySelector(".bar.good .fill").style.width = goodLevel + "%";
+  document.querySelector(".bar.bad .fill").style.width = badLevel + "%";
 }
