@@ -6,7 +6,7 @@ const speech = document.getElementById('speech');
 const speechText = speech.querySelector('p');
 const overflowFill = document.getElementById('overflowFill');
 const input = document.getElementById('chatInput');
-
+const REFUSAL_THRESHOLD = 100;
 /* =========================
    STATE
 ========================= */
@@ -42,16 +42,13 @@ const negativeWords = ['싫어','불안','짜증','화나','우울','힘들어']
    THINKING TEXTS (쀼)
 ========================= */
 const thinkingTexts = [
-  '…',
   '하… 잠깐.',
   '지금 말 걸지 마.',
   '생각 중이거든.',
   '아, 좀.',
-  '……',
   '머리 굴리는 중이니까.',
   '기다려. 진짜.'
 ];
-
 /* =========================
    ANALYZE
 ========================= */
@@ -105,10 +102,12 @@ function typeText(text, speed = 40) {
 function respond(userText) {
   const { p, n } = analyze(userText);
 
-  // 🔥 이미 거부 상태면 더 이상 계산 안 함
+  // 🔥 이미 거부 상태
   if (overflow >= REFUSAL_THRESHOLD) {
     speech.classList.add('shaking');
-    typeText('…');
+    const refusal =
+      refusalTexts[Math.floor(Math.random() * refusalTexts.length)];
+    typeText(refusal, 30);
     return;
   }
 
@@ -122,7 +121,6 @@ function respond(userText) {
 
   overflowFill.style.width = overflow + '%';
 
-  // 생각 중 연출
   speech.classList.add('shaking');
   const thinking =
     thinkingTexts[Math.floor(Math.random() * thinkingTexts.length)];
@@ -140,14 +138,16 @@ async function apiRespond(userText) {
   respond(userText);
 
   // ❌ 빨간 게이지 꽉 찼으면 AI 호출 금지
-  if (overflow >= REFUSAL_THRESHOLD) {
-    setTimeout(() => {
-      speech.classList.remove('shaking');
-      typeText('…');
-      isThinking = false;
-    }, 800);
-    return;
-  }
+ if (overflow >= REFUSAL_THRESHOLD) {
+  setTimeout(() => {
+    speech.classList.remove('shaking');
+    const refusal =
+      refusalTexts[Math.floor(Math.random() * refusalTexts.length)];
+    typeText(refusal, 30);
+    isThinking = false;
+  }, 600);
+  return;
+}
 
   try {
     const res = await fetch('/api/respond', {
