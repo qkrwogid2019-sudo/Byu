@@ -20,34 +20,37 @@
       </div>
     </div>
 
+    <!-- CHARACTER STAGE -->
     <div class="character-stage">
+      <div class="avatar">
 
-  <div class="avatar">
-    <img src="img/base.png" class="layer base" />
+        <img src="img/base.png" class="layer base" />
 
-    <img src="img/angry_01.png" class="layer emotion active" />
-    <img src="img/angry_02.png" class="layer emotion" />
-    <img src="img/angry_03.png" class="layer emotion" />
-    <img src="img/angry_04.png" class="layer emotion" />
-    <img src="img/love_01.png" class="layer emotion" />
-    <img src="img/love_02.png" class="layer emotion" />
-    <img src="img/love_03.png" class="layer emotion" />
-    <img src="img/love_04.png" class="layer emotion" />
-  </div>
+        <!-- 감정 레이어 -->
+        <img src="img/angry_01.png" class="layer emotion active" />
+        <img src="img/angry_02.png" class="layer emotion" />
+        <img src="img/angry_03.png" class="layer emotion" />
+        <img src="img/angry_04.png" class="layer emotion" />
 
-  <!-- 🔥 말풍선은 avatar 밖 -->
-  <div class="speech-bubble" id="speech">
-    <p></p>
-  </div>
+        <img src="img/love_01.png" class="layer emotion" />
+        <img src="img/love_02.png" class="layer emotion" />
+        <img src="img/love_03.png" class="layer emotion" />
+        <img src="img/love_04.png" class="layer emotion" />
 
-</div>
+        <!-- 말풍선 -->
+        <div class="speech-bubble" id="speech">
+          <p id="speechText">…</p>
+        </div>
+
+      </div>
+    </div>
 
     <!-- SYSTEM DIALOGUE -->
     <div class="section dialogue">
       <div class="section-title">System Dialogue</div>
-      <div class="chat-log" id="chatLog">
-        <div class="msg system">System initialized.</div>
-        <div class="msg system">Awaiting input.</div>
+      <div class="chat-log">
+        System initialized.<br/>
+        Awaiting input.
       </div>
       <input id="chatInput" type="text" placeholder="Type something personal..." />
     </div>
@@ -56,14 +59,14 @@
     <div class="section gauge">
       <div class="bar stability">
         STABILITY
-        <div class="fill" id="stabilityFill"></div>
+        <div class="fill" id="stabilityFill" style="width:20%"></div>
       </div>
       <div class="bar overflow">
         AFFECT OVERFLOW
-        <div class="fill" id="overflowFill"></div>
+        <div class="fill" id="overflowFill" style="width:70%"></div>
       </div>
       <div class="status">
-        <span id="systemHint">are you happy...?</span>
+        <span>are you happy...?</span>
         <span>System: Operational</span>
       </div>
     </div>
