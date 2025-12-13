@@ -97,15 +97,13 @@ function respond(text) {
   overflowFill.style.width = overflow + '%';
 
   // 말풍선 출력
-  if (overflow > 80) {
-    speech.classList.add('shaking');
-    typeText(speech.querySelector('p'), '…');
-  } else {
-    speech.classList.remove('shaking');
-    typeText(speech.querySelector('p'), text);
-  }
+  if (overflow >= 95) {
+  speech.classList.add('shaking');
+  typeText(speech.querySelector('p'), '…');
+} else {
+  speech.classList.remove('shaking');
+  typeText(speech.querySelector('p'), text);
 }
-
 async function apiRespond(text) {
   const res = await fetch('/api/respond', {
     method: 'POST',
