@@ -10,6 +10,7 @@ const REFUSAL_THRESHOLD = 100;
 const effectLayer = document.getElementById('effectLayer');
 const emotionSound = document.getElementById('emotionSound');
 const coinSound = document.getElementById('coinSound');
+const coinRejectSound = document.getElementById('coinRejectSound');
 /* =========================
    STATE
 ========================= */
@@ -127,6 +128,15 @@ function playCoinSound() {
     p.catch(() => {});
   }
 }
+function playCoinRejectSound() {
+  if (!coinRejectSound) return;
+
+  coinRejectSound.currentTime = 0;
+  const p = coinRejectSound.play();
+  if (p !== undefined) {
+    p.catch(() => {});
+  }
+}
 /* =========================
    RESPOND (연출 ONLY)
 ========================= */
@@ -193,11 +203,25 @@ async function apiRespond(userText) {
 ========================= */
 input.addEventListener('keydown', e => {
   if (e.key === 'Enter') {
-    e.preventDefault(); // 🔥 iOS 필수
-    if (input.value.trim() && !isThinking) {
-      playCoinSound(); // 🪙 동전 투입
-       apiRespond(input.value.trim());
+    e.preventDefault();
+
+    if (!input.value.trim() || isThinking) return;
+
+    // 🔥 이미 거부 상태면
+    if (overflow >= REFUSAL_THRESHOLD) {
+      playCoinRejectSound();        // 🪙❌ 튕김
+      speech.classList.remove('shaking');
+      typeText(
+        refusalTexts[Math.floor(Math.random() * refusalTexts.length)],
+        30
+      );
       input.value = '';
+      return;
     }
+
+    // 정상 투입
+    playCoinSound();                // 🪙 챙
+    apiRespond(input.value.trim());
+    input.value = '';
   }
 });
