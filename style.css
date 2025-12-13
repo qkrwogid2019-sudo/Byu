@@ -10,6 +10,13 @@ body {
   color: #111;
 }
 
+@media (max-width: 900px) {
+  .window {
+    transform: scale(0.75);
+    transform-origin: top center;
+  }
+}
+
 /* =========================
    DESKTOP CENTERING
 ========================= */
