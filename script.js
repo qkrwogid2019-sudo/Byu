@@ -72,15 +72,13 @@ function chararararakByGroup(group, duration = 800, interval = 120) {
   }, interval);
 }
 
-/* 응답 */
 function respond(text) {
-  speechText.innerText = text;
-
   const { positiveScore, negativeScore } = analyzeInput(text);
 
+  // 반동형성 로직
   if (positiveScore > negativeScore) {
     overflow = Math.min(100, overflow + 15);
-    chararararakByGroup(negativeEmotions); // 🔥 반동형성
+    chararararakByGroup(negativeEmotions); // 🔥 긍정 → 분노
   } else {
     overflow = Math.max(0, overflow - 5);
     chararararakByGroup(positiveEmotions);
@@ -88,8 +86,13 @@ function respond(text) {
 
   overflowFill.style.width = overflow + '%';
 
+  // 말풍선 출력
   if (overflow > 80) {
-    speechText.innerText = '…';
+    speech.classList.add('shaking');
+    typeText(speech.querySelector('p'), '…');
+  } else {
+    speech.classList.remove('shaking');
+    typeText(speech.querySelector('p'), text);
   }
 }
 
