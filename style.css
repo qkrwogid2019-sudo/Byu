@@ -96,19 +96,25 @@ body {
 
 /* ===== SPEECH BUBBLE ===== */
 .speech-bubble {
+  .speech-bubble {
   position: absolute;
   left: 50%;
-  bottom: 190px; /* ← 말풍선 높이 미세조정 */
+  bottom: 190px;
   transform: translateX(-50%);
   background: #fff;
   border: 2px solid #999;
   border-radius: 6px;
-  padding: 6px 10px;
+  padding: 10px 14px;
   font-size: 13px;
   color: #333;
   z-index: 5;
-  min-width: 40px;
-  text-align: center;
+
+  /* 🔥 핵심 */
+  min-width: 220px;     /* 기본 가로폭 */
+  max-width: 300px;     /* 너무 길어지는 거 방지 */
+  text-align: left;     /* 말풍선은 왼쪽 정렬이 자연 */
+  line-height: 1.5;
+  word-break: keep-all; /* 한국어 줄바꿈 안정 */
 }
 
 .speech-bubble::after {
