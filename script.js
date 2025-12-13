@@ -1,7 +1,7 @@
 const emotions = document.querySelectorAll('.emotion');
-const speechText = document.getElementById('speechText');
 const overflowFill = document.getElementById('overflowFill');
 const emotionLayers = Array.from(emotions);
+const speech = document.getElementById('speech');
 
 /* 🔥 중요: 타이머 선언 */
 let shuffleTimer = null;
@@ -32,6 +32,16 @@ const negativeWords = [
   '싫어', '불안', '짜증', '화나', '우울',
   '힘들어', '불편', '괴로워'
 ];
+
+function typeText(element, text, speed = 40) {
+  element.innerText = '';
+  let i = 0;
+  const typing = setInterval(() => {
+    element.innerText += text[i];
+    i++;
+    if (i >= text.length) clearInterval(typing);
+  }, speed);
+}
 
 /* 입력 분석 */
 function analyzeInput(text) {
