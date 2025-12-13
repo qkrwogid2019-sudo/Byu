@@ -54,25 +54,26 @@ function typeText(text) {
   }, 40);
 }
 
-function respond(text) {
-  const { p, n } = analyze(text);
 
-  if (p > n) {
+  function respond(text) {
+  const { positiveScore, negativeScore } = analyzeInput(text);
+
+  if (positiveScore > negativeScore) {
     overflow = Math.min(100, overflow + 15);
-    chararararak(negativeEmotions); // 🔥 반동형성
+    chararararakByGroup(negativeEmotions); // 반동형성
   } else {
     overflow = Math.max(0, overflow - 5);
-    chararararak(positiveEmotions);
+    chararararakByGroup(positiveEmotions);
   }
 
   overflowFill.style.width = overflow + '%';
 
-  if (overflow > 80) {
+  if (overflow >= 95) {
     speech.classList.add('shaking');
-    typeText('…');
+    typeText(speechText, '…');
   } else {
     speech.classList.remove('shaking');
-    typeText(text);
+    typeText(speechText, text);
   }
 }
 
