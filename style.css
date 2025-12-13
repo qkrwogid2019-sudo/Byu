@@ -7,11 +7,16 @@
 }
 
 body {
+ body {
   margin: 0;
-  background: #111;
-  display: flex;
-  justify-content: center;
-  padding: 20px;
+  background-color: #0e0e0e;
+
+  background-image:
+    radial-gradient(circle at 4px 4px, #ff6fae 1px, transparent 1px),
+    radial-gradient(circle at 12px 12px, #6fd3ff 1px, transparent 1px);
+
+  background-size: 16px 16px;
+}
 }
 
 .desktop {
