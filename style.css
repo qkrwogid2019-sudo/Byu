@@ -48,3 +48,10 @@ body {
   left: 0;
   width: 100%;
 }
+
+input {
+  margin-top: 16px;
+  width: 300px;
+  padding: 8px;
+  font-size: 14px;
+}
