@@ -86,8 +86,9 @@ body {
 /* =========================
    AVATAR
 ========================= */
-.avatar {
-  position: relative;   /* 🔥 이 줄이 핵심 */
+
+ .avatar {
+  position: absolute;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
@@ -127,10 +128,9 @@ body {
 ========================= */
 .speech-bubble {
   position: absolute;
-  bottom: 100%;          /* 🔥 캐릭터 머리 바로 위 */
+  top: -58px;          /* 🔥 캐릭터 머리 위 */
   left: 50%;
   transform: translateX(-50%);
-  margin-bottom: 12px;
 
   background: #fff;
   border: 2px solid #888;
