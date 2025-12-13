@@ -20,7 +20,7 @@ const REFUSAL_THRESHOLD = 100;
 /* =========================
    STATE
 ========================= */
-let overflow = 0;
+
 let shuffleTimer = null;
 let typingTimer = null;
 let isThinking = false;
@@ -192,17 +192,11 @@ function typeText(text, speed = 40) {
 function localRespond(userText) {
   const { p, n } = analyze(userText);
 
-  if (p > 0) {
-    happy = Math.min(100, happy + p * 10);
-    chararararak(negativeEmotions); // 반동형성
-    showHappyEffect();
-  }
-
-  if (n > 0) {
-    sadness = Math.min(100, sadness + n * 10);
-    chararararak(positiveEmotions);
-  }
-
+  if (p > n) {
+  chararararak(negativeEmotions);
+} else if (n > p) {
+  chararararak(positiveEmotions);
+}
   // 게이지 반영
   overflowFill.style.width = happy + '%';
   stabilityFill.style.width = sadness + '%';
@@ -221,7 +215,7 @@ async function apiRespond(userText) {
   localRespond(userText);
 
   // ❌ 거부 상태
-  if (overflow >= REFUSAL_THRESHOLD) {
+  if (happy >= REFUSAL_THRESHOLD) {
     setTimeout(() => {
       speech.classList.remove('shaking');
       playCoinRejectSound();
