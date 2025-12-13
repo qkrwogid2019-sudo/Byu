@@ -87,14 +87,13 @@ body {
    AVATAR
 ========================= */
 .avatar {
-  position: absolute;
-  bottom: 0;              /* 🔥 기준은 바닥 */
+  position: relative;   /* 🔥 이 줄이 핵심 */
+  bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 220px;
   z-index: 10;
 }
-
 .avatar img {
   width: 100%;
   display: block;
@@ -128,18 +127,22 @@ body {
 ========================= */
 .speech-bubble {
   position: absolute;
-  bottom: 240px;          /* 🔥 캐릭터 머리 위 */
+  bottom: 100%;          /* 🔥 캐릭터 머리 바로 위 */
   left: 50%;
   transform: translateX(-50%);
+  margin-bottom: 12px;
+
   background: #fff;
   border: 2px solid #888;
   border-radius: 6px;
   padding: 10px 14px;
+
   min-width: 260px;
   max-width: 320px;
   font-size: 13px;
   line-height: 1.5;
   text-align: center;
+
   z-index: 50;
 }
 
