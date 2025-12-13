@@ -8,6 +8,8 @@ const overflowFill = document.getElementById('overflowFill');
 const input = document.getElementById('chatInput');
 const REFUSAL_THRESHOLD = 100;
 const effectLayer = document.getElementById('effectLayer');
+const emotionSound = document.getElementById('emotionSound');
+const coinSound = document.getElementById('coinSound');
 /* =========================
    STATE
 ========================= */
@@ -62,6 +64,8 @@ function chararararak(group, duration = 700, interval = 120) {
   let elapsed = 0;
   clearInterval(shuffleTimer);
 
+  playEmotionSound(); // ⭐ 시작할 때 한 번
+
   shuffleTimer = setInterval(() => {
     emotions.forEach(e => e.classList.remove('active'));
 
@@ -102,7 +106,27 @@ function showHappyEffect() {
     el.remove();
   }, 1200);
 }
+function playEmotionSound() {
+  if (!emotionSound) return;
 
+  emotionSound.currentTime = 0;
+  const playPromise = emotionSound.play();
+
+  if (playPromise !== undefined) {
+    playPromise.catch(() => {
+      // iOS 자동재생 차단 무시
+    });
+  }
+}
+function playCoinSound() {
+  if (!coinSound) return;
+
+  coinSound.currentTime = 0;
+  const p = coinSound.play();
+  if (p !== undefined) {
+    p.catch(() => {});
+  }
+}
 /* =========================
    RESPOND (연출 ONLY)
 ========================= */
@@ -171,7 +195,8 @@ input.addEventListener('keydown', e => {
   if (e.key === 'Enter') {
     e.preventDefault(); // 🔥 iOS 필수
     if (input.value.trim() && !isThinking) {
-      apiRespond(input.value.trim());
+      playCoinSound(); // 🪙 동전 투입
+       apiRespond(input.value.trim());
       input.value = '';
     }
   }
