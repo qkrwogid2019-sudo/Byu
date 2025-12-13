@@ -22,68 +22,40 @@ body {
 }
 
 /* CHARACTER STAGE */
+
 .character-stage {
-  height: 260px;
-  background: #e6e6e6;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  overflow: visible;
-  border-bottom: 2px solid #aaa;
-}
-
-/* AVATAR */
-.avatar {
   position: relative;
-  width: 170px;
+  height: 260px;
+  overflow: visible;
 }
 
-.layer {
+.avatar {
   position: absolute;
-  left: 0;
   bottom: 0;
-  width: 100%;
-}
-
-.base {
-  z-index: 1;
-}
-
-.emotion {
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
   z-index: 2;
-  opacity: 0;
-  transition: opacity 0.15s;
 }
 
-.emotion.active {
-  opacity: 1;
-}
-
-/* SPEECH BUBBLE */
 .speech-bubble {
   position: absolute;
   left: 50%;
-  bottom: 170px;              /* 얼굴 위 */
+  bottom: 180px;
   transform: translateX(-50%);
   background: #fff;
   border: 2px solid #999;
-  border-radius: 6px;
   padding: 8px 10px;
-  font-size: 14px;
-  z-index: 3;                 /* 캐릭터보다 위 */
-  max-width: 160px;
+  border-radius: 6px;
+  z-index: 5;          /* 🔥 avatar보다 위 */
 }
 
-.speech-bubble::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 8px 6px 0 6px;
-  border-style: solid;
-  border-color: #999 transparent transparent transparent;
+.speech-bubble p {
+  color: #000;
+  font-size: 14px;
+  margin: 0;
 }
+
 
 /* DIALOGUE */
 .section {
