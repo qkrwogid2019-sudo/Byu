@@ -130,7 +130,7 @@ function setFinalEmotion(group) {
 /* =========================
    TYPE TEXT
 ========================= */
-function typeText(text, speed = 40) {
+function typeText(text, speed = 45) {
   clearInterval(typingTimer);
   speechText.innerText = '';
   let i = 0;
