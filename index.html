@@ -1,23 +1,121 @@
-<!DOCTYPE html>
-<html lang="ko">
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Claw Emotion Machine</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hipster Generator v1.0</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-  <div class="machine">
-    <!-- 인형뽑기 기계 프레임 -->
-    <img src="img/machine.png" class="machine-frame" alt="machine" />
-
-    <!-- 유리창 (캐릭터 영역) -->
+  <div class="desktop">
     <div class="window">
-      <img src="img/base.png" class="layer base" />
-      <img src="img/angry_01.png" class="layer face" id="faceLayer" />
-    </div>
+      <!-- TITLE BAR -->
+      <div class="titlebar">
+        <div class="title">Hipster Generator v1.0</div>
+        <div class="win-controls">
+          <button class="win-btn" aria-label="Minimize">—</button>
+          <button class="win-btn" aria-label="Close">×</button>
+        </div>
+      </div>
+
+      <!-- MENU BAR -->
+      <div class="menubar">
+        <span class="menu-item">File</span>
+        <span class="menu-item">Edit</span>
+        <span class="menu-item">Style</span>
+        <span class="menu-item">Help</span>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="content">
+        <!-- LEFT COLUMN -->
+        <div class="col left">
+          <fieldset class="group">
+            <legend>Base Model</legend>
+            <button class="btn big">Copy</button>
+          </fieldset>
+
+          <fieldset class="group">
+            <legend>Apply Preset</legend>
+            <button class="btn big">Apply<br/>Preset</button>
+          </fieldset>
+        </div>
+
+        <!-- CENTER PREVIEW -->
+        <div class="col center">
+          <div class="preview">
+            <div class="preview-inner">
+              <div class="preview-text">
+                Drag &amp; Drop<br />
+                to spawn more<br />
+                unique<br />
+                individuals
+              </div>
+
+              <!-- ✅ 여기 안에 네 캐릭터 레이어 넣으면 됨 -->
+              <!--
+              <div class="avatar">
+                <img src="img/base.png" class="layer base">
+                <img src="img/angry_01.png" class="layer face" id="faceLayer">
+              </div>
+              -->
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="col right">
+          <fieldset class="group">
+            <legend>Style Presets</legend>
+
+            <label class="check">
+              <input type="checkbox" />
+              <span>Checked</span>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <span>Checked</span>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" checked />
+              <span>Checked</span>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" />
+              <span>Unchecked</span>
+            </label>
+            <fieldset class="group chat">
+  <legend>System Dialogue</legend>
+
+  <div class="chat-log" id="chatLog">
+    <div class="msg system">System ready.</div>
+    <div class="msg system">Awaiting input.</div>
   </div>
 
+  <div class="chat-input">
+    <input
+      type="text"
+      id="chatInput"
+      placeholder="Type something personal..."
+      autocomplete="off"
+    />
+    <button class="btn send">Send</button>
+  </div>
+</fieldset>
+          </fieldset>
+        </div>
+      </div>
+
+      <!-- STATUS BAR -->
+      <div class="statusbar">
+        <div class="status-cell">Instances: 24</div>
+        <div class="status-cell">Uniqueness: 3%</div>
+        <div class="status-cell">System: Stable <span class="sad">(sadly)</span></div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
