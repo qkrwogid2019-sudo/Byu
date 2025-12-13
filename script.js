@@ -96,6 +96,17 @@ function respond(text) {
   }
 }
 
+async function apiRespond(text) {
+  const res = await fetch('/api/respond', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: text })
+  });
+
+  const data = await res.json();
+  respond(data.reply);
+}
+
 /* 엔터 입력 */
 document.getElementById('chatInput').addEventListener('keydown', e => {
   if (e.key === 'Enter' && e.target.value.trim() !== '') {
