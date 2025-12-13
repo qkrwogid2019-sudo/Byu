@@ -1,3 +1,6 @@
+/* =========================
+   GLOBAL
+========================= */
 * {
   box-sizing: border-box;
   font-family: system-ui, -apple-system, BlinkMacSystemFont;
@@ -20,7 +23,9 @@ body {
   border: 2px solid #888;
 }
 
-/* TITLE BAR */
+/* =========================
+   TITLE BAR
+========================= */
 .titlebar {
   background: linear-gradient(#3a6ea5, #2f5f94);
   color: #fff;
@@ -35,20 +40,26 @@ body {
   height: 22px;
 }
 
-/* CHARACTER STAGE */
+/* =========================
+   CHARACTER STAGE
+========================= */
 .character-stage {
   position: relative;
   height: 280px;
   background: #eee;
   border-bottom: 2px solid #999;
-  overflow: hidden;
+  overflow: visible; /* 🔥 핵심 */
 }
+
+/* =========================
+   EFFECT LAYER
+========================= */
 #effectLayer {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 16px;
+  right: 16px;
   pointer-events: none;
-  z-index: 20;
+  z-index: 100;
 }
 
 .happy-effect {
@@ -71,12 +82,17 @@ body {
     transform: translateY(-20px);
   }
 }
+
+/* =========================
+   AVATAR
+========================= */
 .avatar {
   position: absolute;
-  top: 20px;
+  bottom: 0;              /* 🔥 기준은 바닥 */
   left: 50%;
   transform: translateX(-50%);
   width: 220px;
+  z-index: 10;
 }
 
 .avatar img {
@@ -84,6 +100,9 @@ body {
   display: block;
 }
 
+/* =========================
+   LAYERS
+========================= */
 .layer {
   position: absolute;
   left: 0;
@@ -100,14 +119,16 @@ body {
   z-index: 2;
 }
 
-#effectLayer {
-  z-index: 100;
+.layer.emotion.active {
+  opacity: 1;
 }
-}
-/* SPEECH */
+
+/* =========================
+   SPEECH BUBBLE
+========================= */
 .speech-bubble {
   position: absolute;
-  bottom: 210px;
+  bottom: 240px;          /* 🔥 캐릭터 머리 위 */
   left: 50%;
   transform: translateX(-50%);
   background: #fff;
@@ -127,12 +148,14 @@ body {
 }
 
 @keyframes shake {
-  0% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(1px); }
+  0%   { transform: translateX(-50%) translateY(0); }
+  50%  { transform: translateX(-50%) translateY(1px); }
   100% { transform: translateX(-50%) translateY(0); }
 }
 
-/* SECTIONS */
+/* =========================
+   SECTIONS
+========================= */
 .section {
   padding: 8px 10px;
   font-size: 12px;
@@ -160,7 +183,9 @@ input {
   font-size: 13px;
 }
 
-/* GAUGE */
+/* =========================
+   GAUGE
+========================= */
 .bar {
   background: #ccc;
   margin-bottom: 6px;
@@ -176,7 +201,6 @@ input {
   top: 0;
   left: 0;
   height: 100%;
-  z-index: 0;
 }
 
 .bar.stability .fill {
