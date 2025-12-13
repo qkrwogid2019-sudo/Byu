@@ -105,9 +105,16 @@ function typeText(text, speed = 40) {
 function respond(userText) {
   const { p, n } = analyze(userText);
 
+  // 🔥 이미 거부 상태면 더 이상 계산 안 함
+  if (overflow >= REFUSAL_THRESHOLD) {
+    speech.classList.add('shaking');
+    typeText('…');
+    return;
+  }
+
   if (p > n) {
-    overflow = Math.min(100, overflow + 15);
-    chararararak(negativeEmotions); // 🔥 반동형성
+    overflow = Math.min(REFUSAL_THRESHOLD, overflow + 15);
+    chararararak(negativeEmotions);
   } else {
     overflow = Math.max(0, overflow - 5);
     chararararak(positiveEmotions);
@@ -115,7 +122,7 @@ function respond(userText) {
 
   overflowFill.style.width = overflow + '%';
 
-  // 🔥 생각 중 연출
+  // 생각 중 연출
   speech.classList.add('shaking');
   const thinking =
     thinkingTexts[Math.floor(Math.random() * thinkingTexts.length)];
@@ -126,14 +133,23 @@ function respond(userText) {
    API RESPOND (실제 발화)
 ========================= */
 async function apiRespond(userText) {
-  if (isThinking) return; // 🔒 중복 입력 방지
+  if (isThinking) return;
   isThinking = true;
 
-  // 1️⃣ 연출
+  // 🔥 먼저 연출
   respond(userText);
 
+  // ❌ 빨간 게이지 꽉 찼으면 AI 호출 금지
+  if (overflow >= REFUSAL_THRESHOLD) {
+    setTimeout(() => {
+      speech.classList.remove('shaking');
+      typeText('…');
+      isThinking = false;
+    }, 800);
+    return;
+  }
+
   try {
-    // 2️⃣ AI 호출
     const res = await fetch('/api/respond', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -144,20 +160,12 @@ async function apiRespond(userText) {
 
     const data = await res.json();
 
-    // 3️⃣ 일부러 지연 (쀼는 바로 말 안 함)
     const delay = 800 + Math.random() * 700;
 
     setTimeout(() => {
       speech.classList.remove('shaking');
-
-      // 🔥 응답 거부 구간
-      if (overflow >= 95) {
-        typeText('…');
-      } else {
-        typeText(data.reply);
-      }
-
-      isThinking = false; // 🔓 입력 다시 열기
+      typeText(data.reply);
+      isThinking = false;
     }, delay);
 
   } catch (err) {
@@ -166,7 +174,12 @@ async function apiRespond(userText) {
     isThinking = false;
   }
 }
-
+const refusalTexts = [
+  '…',
+  '그만.',
+  '여기까지.',
+  '말 안 해.',
+];
 /* =========================
    INPUT (iOS SAFE)
 ========================= */
