@@ -80,10 +80,15 @@ body {
 }
 
 .layer {
-  
+  position: absolute;
+  bottom: 0;              /* 🔥 무조건 바닥 기준 */
+  left: 0;
   width: 100%;
+  height: auto;
   image-rendering: pixelated;
 }
+  
+
 
 /* DIALOGUE */
 .chat-log {
