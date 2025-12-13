@@ -1,224 +1,79 @@
-/* ===== RESET ===== */
-* {
-  box-sizing: border-box;
-}
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Emotion Vending Machine v1.0</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
-body {
-  margin: 0;
-  padding: 20px 0;
-  background: #111;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  display: flex;
-  justify-content: center;
-}
+<div class="desktop">
+  <div class="window">
 
-/* ===== DESKTOP WRAPPER ===== */
-.desktop {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
+    <!-- TITLE BAR -->
+    <div class="titlebar">
+      <div class="title">Emotion Vending Machine v1.0</div>
+      <div class="win-controls">
+        <button class="win-btn">—</button>
+        <button class="win-btn">×</button>
+      </div>
+    </div>
 
-/* ===== WINDOW ===== */
-.window {
-  width: 360px;
-  background: #dcdcdc;
-  border: 2px solid #999;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-  overflow: hidden; /* 🔥 캐릭터 탈주 방지 */
-}
+    <!-- CHARACTER STAGE -->
+    <div class="character-stage">
+      <div class="avatar">
 
-/* ===== TITLE BAR ===== */
-.titlebar {
-  height: 32px;
-  background: linear-gradient(#3b6ea5, #2c5684);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 8px;
-  font-size: 13px;
-}
+        <img src="img/base.png" class="layer base" />
 
-.win-controls {
-  display: flex;
-  gap: 6px;
-}
+        <!-- 감정 레이어 -->
+        <img src="img/angry_01.png" class="layer emotion active" />
+        <img src="img/angry_02.png" class="layer emotion" />
+        <img src="img/angry_03.png" class="layer emotion" />
+        <img src="img/angry_04.png" class="layer emotion" />
 
-.win-btn {
-  width: 22px;
-  height: 18px;
-  border-radius: 4px;
-  border: none;
-  background: #eee;
-  font-weight: bold;
-  cursor: default;
-}
+        <img src="img/love_01.png" class="layer emotion" />
+        <img src="img/love_02.png" class="layer emotion" />
+        <img src="img/love_03.png" class="layer emotion" />
+        <img src="img/love_04.png" class="layer emotion" />
 
-/* ===== CHARACTER STAGE ===== */
-.character-stage {
-  position: relative;
-  height: 260px;
-  background: #eee;
-  border-bottom: 2px solid #aaa;
-  overflow: hidden; /* 🔥 무대 밖 금지 */
-}
+        <!-- 말풍선 -->
+        <div class="speech-bubble" id="speech">
+          <p id="speechText">…</p>
+        </div>
 
-/* ===== AVATAR ===== */
-.avatar {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%) scale(1.15); /* ← 여기서 캐릭터 크기 조절 */
-  transform-origin: bottom center;
-  width: 180px;
-  height: 220px;
-  z-index: 2;
-}
+      </div>
+    </div>
 
-/* ===== IMAGE LAYERS ===== */
-.layer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  pointer-events: none;
-}
+    <!-- SYSTEM DIALOGUE -->
+    <div class="section dialogue">
+      <div class="section-title">System Dialogue</div>
+      <div class="chat-log">
+        System initialized.<br/>
+        Awaiting input.
+      </div>
+      <input id="chatInput" type="text" placeholder="Type something personal..." />
+    </div>
 
-.emotion {
-  opacity: 0;
-  transition: opacity 0.12s linear;
-}
+    <!-- GAUGE -->
+    <div class="section gauge">
+      <div class="bar stability">
+        STABILITY
+        <div class="fill" id="stabilityFill" style="width:20%"></div>
+      </div>
+      <div class="bar overflow">
+        AFFECT OVERFLOW
+        <div class="fill" id="overflowFill" style="width:70%"></div>
+      </div>
+      <div class="status">
+        <span>are you happy...?</span>
+        <span>System: Operational</span>
+      </div>
+    </div>
 
-.emotion.active {
-  opacity: 1;
-}
+  </div>
+</div>
 
-/* ===== SPEECH BUBBLE ===== */
-.speech-bubble {
-  .speech-bubble {
-  position: absolute;
-  left: 50%;
-  bottom: 190px;
-  transform: translateX(-50%);
-  background: #fff;
-  border: 2px solid #999;
-  border-radius: 6px;
-  padding: 10px 14px;
-  font-size: 13px;
-  color: #333;
-  z-index: 5;
-
-  /* 🔥 핵심 */
-  min-width: 220px;     /* 기본 가로폭 */
-  max-width: 300px;     /* 너무 길어지는 거 방지 */
-  text-align: left;     /* 말풍선은 왼쪽 정렬이 자연 */
-  line-height: 1.5;
-  word-break: keep-all; /* 한국어 줄바꿈 안정 */
-}
-
-.speech-bubble::after {
-  content: "";
-  position: absolute;
-  bottom: -6px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 10px;
-  height: 10px;
-  background: #fff;
-  border-right: 2px solid #999;
-  border-bottom: 2px solid #999;
-  transform: translateX(-50%) rotate(45deg);
-}
-
-/* 미세 흔들림 */
-.speech-bubble.shaking {
-  animation: shake 0.15s infinite;
-}
-
-@keyframes shake {
-  0% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-1px); }
-  100% { transform: translateX(-50%) translateY(0); }
-}
-
-/* ===== SYSTEM DIALOGUE ===== */
-.section.dialogue {
-  padding: 8px;
-  background: #ddd;
-  border-bottom: 2px solid #aaa;
-}
-
-.section-title {
-  font-weight: bold;
-  font-size: 13px;
-  margin-bottom: 4px;
-}
-
-.chat-log {
-  background: #fff;
-  border: 2px inset #aaa;
-  padding: 6px;
-  height: 80px;
-  font-size: 12px;
-  overflow-y: auto;
-}
-
-.msg.system {
-  color: #333;
-}
-
-#chatInput {
-  width: 100%;
-  margin-top: 6px;
-  padding: 6px;
-  font-size: 13px;
-  border: 2px inset #aaa;
-}
-
-/* ===== GAUGE ===== */
-.section.gauge {
-  padding: 8px;
-  background: #d6d6d6;
-}
-
-.bar {
-  position: relative;
-  height: 18px;
-  background: #bbb;
-  margin-bottom: 6px;
-  font-size: 11px;
-  line-height: 18px;
-  padding-left: 6px;
-  overflow: hidden;
-}
-
-.bar .fill {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  z-index: 0;
-}
-
-.bar.stability .fill {
-  background: #8bc8a1;
-  width: 20%;
-}
-
-.bar.overflow .fill {
-  background: #d67c73;
-  width: 70%;
-}
-
-.bar span {
-  position: relative;
-  z-index: 1;
-}
-
-.status {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  margin-top: 4px;
-}
+<script src="script.js"></script>
+</body>
+</html>
