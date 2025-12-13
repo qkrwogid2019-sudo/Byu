@@ -19,7 +19,7 @@ export default async function handler(req, res) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'gpt-4o-mini',
+          model: 'gpt-4o',
           temperature: 0.8,        // 🔥 헛소리 줄이고 캐릭터 고정
           max_tokens: 160,         // 🔥 짧은 대사 유지
           messages: [
