@@ -97,7 +97,10 @@ function showHappyEffect() {
 function chararararak(finalGroup, interval = 100, loops = 2) {
   clearInterval(shuffleTimer);
   const all = [...emotions];
-  const finals = all.filter(e => finalGroup.includes(e.src));
+  // ✅ 수정
+const finals = all.filter(e =>
+  finalGroup.some(path => e.src.includes(path))
+);
 
   let i = 0, count = 0;
   const total = all.length * loops;
