@@ -7,6 +7,7 @@ const speechText = speech.querySelector('p');
 const overflowFill = document.getElementById('overflowFill');
 const input = document.getElementById('chatInput');
 const REFUSAL_THRESHOLD = 100;
+const effectLayer = document.getElementById('effectLayer');
 /* =========================
    STATE
 ========================= */
@@ -35,7 +36,7 @@ const positiveEmotions = [
 /* =========================
    WORDS
 ========================= */
-const positiveWords = ['좋아','행복','사랑','고마워','괜찮아'];
+const positiveWords = ['좋아','안아','뽀뽀','키스''행복','사랑','고마워','괜찮아'];
 const negativeWords = ['싫어','불안','짜증','화나','우울','힘들어'];
 
 /* =========================
@@ -43,11 +44,6 @@ const negativeWords = ['싫어','불안','짜증','화나','우울','힘들어']
 ========================= */
 const thinkingTexts = [
   '하… 잠깐.',
-  '지금 말 걸지 마.',
-  '생각 중이거든.',
-  '아, 좀.',
-  '머리 굴리는 중이니까.',
-  '기다려. 진짜.'
 ];
 /* =========================
    ANALYZE
@@ -95,6 +91,17 @@ function typeText(text, speed = 40) {
     if (i >= text.length) clearInterval(typingTimer);
   }, speed);
 }
+function showHappyEffect() {
+  const el = document.createElement('div');
+  el.className = 'happy-effect';
+  el.innerText = '+1 HAPPY';
+
+  effectLayer.appendChild(el);
+
+  setTimeout(() => {
+    el.remove();
+  }, 1200);
+}
 
 /* =========================
    RESPOND (연출 ONLY)
@@ -111,13 +118,14 @@ function respond(userText) {
     return;
   }
 
-  if (p > n) {
-    overflow = Math.min(REFUSAL_THRESHOLD, overflow + 15);
-    chararararak(negativeEmotions);
-  } else {
-    overflow = Math.max(0, overflow - 5);
-    chararararak(positiveEmotions);
-  }
+ if (p > n) {
+  overflow = Math.min(REFUSAL_THRESHOLD, overflow + 15);
+  chararararak(negativeEmotions);
+  showHappyEffect(); // ⭐ 여기
+} else {
+  overflow = Math.max(0, overflow - 5);
+  chararararak(positiveEmotions);
+}
 
   overflowFill.style.width = overflow + '%';
 
