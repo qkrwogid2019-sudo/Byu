@@ -126,28 +126,35 @@ function showHappyEffect() {
 /* =========================
    EMOTION SHUFFLE (2바퀴)
 ========================= */
-function chararararak(group, interval = 120, loops = 2) {
+function chararararak(finalGroup, interval = 110, loops = 2) {
   clearInterval(shuffleTimer);
 
-  const candidates = [...emotions].filter(e =>
-    group.includes(e.getAttribute('src'))
+  const all = [...emotions]; // 🔥 전체 표정
+  const finals = all.filter(e =>
+    finalGroup.includes(e.getAttribute('src'))
   );
-  if (!candidates.length) return;
 
   let index = 0;
   let count = 0;
-  const total = candidates.length * loops;
+  const totalSteps = all.length * loops;
 
   shuffleTimer = setInterval(() => {
     emotions.forEach(e => e.classList.remove('active'));
-    candidates[index].classList.add('active');
+    all[index % all.length].classList.add('active');
 
-    playEmotionSound();
-
-    index = (index + 1) % candidates.length;
+    index++;
     count++;
 
-    if (count >= total) clearInterval(shuffleTimer);
+    if (count >= totalSteps) {
+      clearInterval(shuffleTimer);
+
+      // 🔥 마지막은 의도된 감정으로 고정
+      emotions.forEach(e => e.classList.remove('active'));
+      if (finals.length) {
+        finals[Math.floor(Math.random() * finals.length)]
+          .classList.add('active');
+      }
+    }
   }, interval);
 }
 
