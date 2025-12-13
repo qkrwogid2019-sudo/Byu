@@ -11,7 +11,7 @@ const effectLayer = document.getElementById('effectLayer');
 const emotionSound = document.getElementById('emotionSound');
 const coinSound = document.getElementById('coinSound');
 const coinRejectSound = document.getElementById('coinRejectSound');
-
+const stabilityFill = document.getElementById('stabilityFill');
 /* =========================
    CONSTANTS
 ========================= */
@@ -25,7 +25,8 @@ let shuffleTimer = null;
 let typingTimer = null;
 let isThinking = false;
 let audioUnlocked = false;
-
+let happy = 0;
+let sadness = 0;
 /* =========================
    ASSETS
 ========================= */
@@ -191,19 +192,23 @@ function typeText(text, speed = 40) {
 function localRespond(userText) {
   const { p, n } = analyze(userText);
 
-  if (p > n) {
-    overflow = Math.min(REFUSAL_THRESHOLD, overflow + 15);
-    chararararak(negativeEmotions);
+  if (p > 0) {
+    happy = Math.min(100, happy + p * 10);
+    chararararak(negativeEmotions); // 반동형성
     showHappyEffect();
-  } else {
-    overflow = Math.max(0, overflow - 5);
+  }
+
+  if (n > 0) {
+    sadness = Math.min(100, sadness + n * 10);
     chararararak(positiveEmotions);
   }
 
-  overflowFill.style.width = overflow + '%';
+  // 게이지 반영
+  overflowFill.style.width = happy + '%';
+  stabilityFill.style.width = sadness + '%';
 
   speech.classList.add('shaking');
-  typeText(thinkingTexts[Math.floor(Math.random() * thinkingTexts.length)], 35);
+  typeText(thinkingTexts[0], 35);
 }
 
 /* =========================
