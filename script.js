@@ -60,7 +60,21 @@ function typeText(text, speed = 40) {
     if (i >= text.length) clearInterval(typingTimer);
   }, speed);
 }
+async function apiRespond(userText) {
+  // 🔥 감정 분석 + 얼굴 연출
+  respond(userText);
 
+  const res = await fetch('/api/respond', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: userText })
+  });
+
+  const data = await res.json();
+
+  speech.classList.remove('shaking');
+  typeText(data.reply);
+}
 /* 🧠 반응 */
 function respond(text) {
   const { p, n } = analyze(text);
@@ -87,7 +101,7 @@ function respond(text) {
 /* ⌨️ 입력 */
 input.addEventListener('keydown', e => {
   if (e.key === 'Enter' && input.value.trim()) {
-    apirespond(input.value.trim());
+    apiRespond(input.value.trim());
     input.value = '';
   }
 });
