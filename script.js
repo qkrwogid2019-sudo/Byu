@@ -96,28 +96,37 @@ function showHappyEffect() {
 ========================= */
 function chararararak(finalGroup, interval = 100, loops = 2) {
   clearInterval(shuffleTimer);
-  const all = [...emotions];
-  // ✅ 수정
-const finals = all.filter(e =>
-  finalGroup.some(path => e.src.includes(path))
-);
 
-  let i = 0, count = 0;
+  const all = [...emotions];
+  let index = 0;
+  let count = 0;
   const total = all.length * loops;
 
   shuffleTimer = setInterval(() => {
     all.forEach(e => e.classList.remove('active'));
-    all[i % all.length].classList.add('active');
-    i++; count++;
+    all[index % all.length].classList.add('active');
+
+    index++;
+    count++;
 
     if (count >= total) {
       clearInterval(shuffleTimer);
-      all.forEach(e => e.classList.remove('active'));
-      finals[Math.floor(Math.random()*finals.length)]?.classList.add('active');
+      setFinalEmotion(finalGroup); // 🔥 여기서만 고정
     }
   }, interval);
 }
+function setFinalEmotion(group) {
+  emotions.forEach(e => e.classList.remove('active'));
 
+  const candidates = [...emotions].filter(e =>
+    group.includes(e.getAttribute('src'))
+  );
+
+  if (!candidates.length) return;
+
+  candidates[Math.floor(Math.random() * candidates.length)]
+    .classList.add('active');
+}
 /* =========================
    TYPE TEXT
 ========================= */
@@ -137,28 +146,21 @@ function typeText(text, speed = 40) {
 function localRespond(text) {
   const { p, n } = analyze(text);
 
-  // === 게이지 증가 ===
   if (p > 0) {
+    // 💖 사용자가 기쁨 → 쀼는 화냄
     happy = Math.min(100, happy + p * 10);
     showHappyEffect();
+    chararararak(negativeEmotions); // 😡
   }
 
   if (n > 0) {
+    // 💔 사용자가 슬픔 → 쀼는 웃음
     sadness = Math.min(100, sadness + n * 10);
+    chararararak(positiveEmotions); // 😊
   }
 
   overflowFill.style.width = happy + '%';
   stabilityFill.style.width = sadness + '%';
-
-  // === 🔥 표정 결정은 "이번 입력 기준" ===
-  if (n > p) {
-    // 네거티브 입력 → 화난 계열
-    chararararak(negativeEmotions);
-  } else if (p > n) {
-    // 긍정 입력 → 사랑 계열
-    chararararak(positiveEmotions);
-  }
-  // p === n 이면 표정 유지 (일부러 아무 것도 안 함)
 
   speech.classList.add('shaking');
   typeText(thinkingTexts[0], 35);
