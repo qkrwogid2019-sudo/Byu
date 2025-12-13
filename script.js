@@ -180,6 +180,9 @@ async function apiRespond(userText) {
     speech.classList.remove('shaking');
     typeText('…지금 말 안 할게.');
     isThinking = false;
+  } finally {
+    // 🔥 무조건 락 해제
+    isThinking = false;
   }
 }
 const refusalTexts = [
