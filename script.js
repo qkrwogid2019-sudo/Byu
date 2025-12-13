@@ -4,29 +4,30 @@
 const emotions = document.querySelectorAll('.emotion');
 const speech = document.getElementById('speech');
 const speechText = document.getElementById('speechText');
-const overflowFill = document.getElementById('overflowFill');
+const happyFill = document.getElementById('overflowFill');
+const sadnessFill = document.getElementById('stabilityFill');
 const input = document.getElementById('chatInput');
 const effectLayer = document.getElementById('effectLayer');
 
 const emotionSound = document.getElementById('emotionSound');
 const coinSound = document.getElementById('coinSound');
 const coinRejectSound = document.getElementById('coinRejectSound');
-const stabilityFill = document.getElementById('stabilityFill');
+
 /* =========================
    CONSTANTS
 ========================= */
-
+const MAX_GAUGE = 100;
 
 /* =========================
    STATE
 ========================= */
-
+let happy = 0;
+let sadness = 0;
 let shuffleTimer = null;
 let typingTimer = null;
 let isThinking = false;
 let audioUnlocked = false;
-let happy = 0;
-let sadness = 0;
+
 /* =========================
    ASSETS
 ========================= */
@@ -48,31 +49,20 @@ const positiveEmotions = [
    WORDS
 ========================= */
 const positiveWords = [
-  '고마워','행복','기뻐','즐거워','신나','설레',
-  '편해','안정','든든','따뜻해',
-  '좋아','사랑','사랑해','보고싶어','그리워',
-  '안아','안아줘','뽀뽀','키스','껴안다',
-  '같이','옆에','붙어','내꺼',
-  '감사','최고','짱이야','괜찮아','잘했어'
+  '좋아','사랑','고마워','행복','기뻐','설레',
+  '안아','보고싶어','괜찮아','잘했어'
 ];
+
 const negativeWords = [
-  '아파','무서워','지쳐','지친다','피곤','버거워',
-  '미워','상처','버려','외로워',
-  '스트레스','답답해','싫어','불안',
-  '짜증','화나','끝','우울','힘들어','포기'
+  '힘들어','우울','불안','짜증','화나',
+  '외로워','아파','지쳐','싫어'
 ];
 
 /* =========================
-   THINKING / REFUSAL TEXT
+   TEXT
 ========================= */
-const thinkingTexts = [
-  '하… 잠깐.',
-];
-
-const refusalTexts = [
-  '그만.',
-  '말 안 해.'
-];
+const thinkingTexts = ['하… 잠깐.'];
+const refusalTexts = ['그만.', '말 안 해.'];
 
 /* =========================
    ANALYZE
@@ -85,11 +75,10 @@ function analyze(text) {
 }
 
 /* =========================
-   AUDIO UNLOCK (iOS 핵심)
+   AUDIO (iOS)
 ========================= */
 function unlockAudio() {
   if (audioUnlocked) return;
-
   [emotionSound, coinSound, coinRejectSound].forEach(a => {
     if (!a) return;
     a.play().then(() => {
@@ -97,76 +86,54 @@ function unlockAudio() {
       a.currentTime = 0;
     }).catch(()=>{});
   });
-
   audioUnlocked = true;
 }
 
-/* =========================
-   SOUND HELPERS
-========================= */
-function playEmotionSound() {
-  if (!emotionSound) return;
-  emotionSound.currentTime = 0;
-  emotionSound.play().catch(()=>{});
-}
-
-function playCoinSound() {
-  if (!coinSound) return;
-  coinSound.currentTime = 0;
-  coinSound.play().catch(()=>{});
-}
-
-function playCoinRejectSound() {
-  if (!coinRejectSound) return;
-  coinRejectSound.currentTime = 0;
-  coinRejectSound.play().catch(()=>{});
-}
+const play = a => {
+  if (!a) return;
+  a.currentTime = 0;
+  a.play().catch(()=>{});
+};
 
 /* =========================
-   HAPPY EFFECT
+   EFFECT
 ========================= */
 function showHappyEffect() {
   if (!effectLayer) return;
-
   const el = document.createElement('div');
   el.className = 'happy-effect';
   el.innerText = '+1 HAPPY';
   effectLayer.appendChild(el);
-
   setTimeout(() => el.remove(), 1200);
 }
 
 /* =========================
-   EMOTION SHUFFLE (2바퀴)
+   EMOTION SHUFFLE
 ========================= */
-function chararararak(finalGroup, interval = 110, loops = 2) {
+function chararararak(finalGroup, loops = 2, interval = 110) {
   clearInterval(shuffleTimer);
 
-  const all = [...emotions]; // 🔥 전체 표정
+  const all = [...emotions];
   const finals = all.filter(e =>
     finalGroup.includes(e.getAttribute('src'))
   );
 
-  let index = 0;
-  let count = 0;
-  const totalSteps = all.length * loops;
+  let step = 0;
+  const total = all.length * loops;
 
   shuffleTimer = setInterval(() => {
     emotions.forEach(e => e.classList.remove('active'));
-    all[index % all.length].classList.add('active');
+    all[step % all.length].classList.add('active');
+    step++;
 
-    index++;
-    count++;
-
-    if (count >= totalSteps) {
+    if (step >= total) {
       clearInterval(shuffleTimer);
-
-      // 🔥 마지막은 의도된 감정으로 고정
       emotions.forEach(e => e.classList.remove('active'));
       if (finals.length) {
         finals[Math.floor(Math.random() * finals.length)]
           .classList.add('active');
       }
+      play(emotionSound);
     }
   }, interval);
 }
@@ -180,35 +147,35 @@ function typeText(text, speed = 40) {
   let i = 0;
 
   typingTimer = setInterval(() => {
-    speechText.innerText += text[i] ?? '';
-    i++;
+    speechText.innerText += text[i++] ?? '';
     if (i >= text.length) clearInterval(typingTimer);
   }, speed);
 }
 
 /* =========================
-   LOCAL RESPOND (연출)
+   LOCAL RESPOND (게이지 + 연출)
 ========================= */
 function localRespond(userText) {
   const { p, n } = analyze(userText);
 
   if (p > 0) {
-    happy = Math.min(100, happy + p * 10);
+    happy = Math.min(MAX_GAUGE, happy + p * 10);
     chararararak(negativeEmotions);
     showHappyEffect();
   }
 
   if (n > 0) {
-    sadness = Math.min(100, sadness + n * 10);
+    sadness = Math.min(MAX_GAUGE, sadness + n * 10);
     chararararak(positiveEmotions);
   }
 
-  overflowFill.style.width = happy + '%';
-  stabilityFill.style.width = sadness + '%';
+  happyFill.style.width = happy + '%';
+  sadnessFill.style.width = sadness + '%';
 
   speech.classList.add('shaking');
   typeText(thinkingTexts[0], 35);
 }
+
 /* =========================
    API RESPOND
 ========================= */
@@ -218,12 +185,11 @@ async function apiRespond(userText) {
 
   localRespond(userText);
 
-  // ❌ 거부 상태
-  if (happy >= REFUSAL_THRESHOLD) {
+  if (happy >= MAX_GAUGE) {
     setTimeout(() => {
       speech.classList.remove('shaking');
-      playCoinRejectSound();
-      typeText(refusalTexts[Math.floor(Math.random() * refusalTexts.length)], 30);
+      play(coinRejectSound);
+      typeText(refusalTexts[Math.floor(Math.random() * refusalTexts.length)]);
       isThinking = false;
     }, 600);
     return;
@@ -242,7 +208,7 @@ async function apiRespond(userText) {
       speech.classList.remove('shaking');
       typeText(data.reply || '…');
       isThinking = false;
-    }, 900 + Math.random() * 600);
+    }, 900);
 
   } catch (e) {
     speech.classList.remove('shaking');
@@ -252,27 +218,24 @@ async function apiRespond(userText) {
 }
 
 /* =========================
-   INPUT (iOS SAFE)
+   INPUT
 ========================= */
 input.addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
+  if (e.key !== 'Enter') return;
+  e.preventDefault();
 
-    unlockAudio(); // 🔥🔥🔥 필수
+  unlockAudio();
 
-    if (!input.value.trim() || isThinking) return;
+  if (!input.value.trim() || isThinking) return;
 
-    // 이미 거부 상태
-    // INPUT 부분
-if (happy >= REFUSAL_THRESHOLD) {
-  playCoinRejectSound();
-  typeText(refusalTexts[Math.floor(Math.random() * refusalTexts.length)], 30);
-  input.value = '';
-  return;
-}
-
-    playCoinSound();
-    apiRespond(input.value.trim());
+  if (happy >= MAX_GAUGE) {
+    play(coinRejectSound);
+    typeText(refusalTexts[Math.floor(Math.random() * refusalTexts.length)]);
     input.value = '';
+    return;
   }
+
+  play(coinSound);
+  apiRespond(input.value.trim());
+  input.value = '';
 });
