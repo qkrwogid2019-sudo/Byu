@@ -5,15 +5,17 @@
 
 .label {
   font-size: 12px;
-  margin-bottom: 4px;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
 }
 
 .gauge {
   width: 100%;
-  height: 14px;
-  background: #eee;
-  border-radius: 8px;
+  height: 16px;
+  background: #222;
+  border-radius: 10px;
   overflow: hidden;
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.6);
 }
 
 .fill {
@@ -21,10 +23,11 @@
   width: 0%;
   background: linear-gradient(
     90deg,
-    #ff9a9e,
-    #fad0c4
+    #ff7a7a,
+    #ffd36a,
+    #7affb2
   );
-  transition: width 0.3s ease;
+  transition: width 0.4s ease;
 }
 
 body {
