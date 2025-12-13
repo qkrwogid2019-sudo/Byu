@@ -1,1 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>BBU</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
+<div id="ui">
+  <div class="label">좋음 게이지</div>
+  <div class="gauge">
+    <div class="fill" id="likeGauge"></div>
+  </div>
+</div>
+
+<div id="character">
+  <img src="img/base.png" class="layer base">
+  <img src="img/angry_01.png" class="layer face" id="face">
+</div>
+
+<button onclick="updateFace()">말 걸기</button>
+
+<script src="script.js"></script>
+</body>
+</html>
