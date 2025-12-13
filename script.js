@@ -32,6 +32,12 @@ input.addEventListener("keydown", (e) => {
   }, 600);
 });
 
+const speech = document.getElementById("speech");
+
+function updateSpeech(text) {
+  speech.innerText = text;
+}
+
 function addLog(type, text) {
   const div = document.createElement("div");
   div.className = "msg " + type;
