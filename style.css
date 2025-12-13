@@ -79,6 +79,50 @@ body {
   pointer-events: none;
 }
 
+.character-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 12px;
+}
+
+.speech-bubble {
+  position: relative;
+  max-width: 220px;
+  background: #f4f4f4;
+  border: 2px solid #888;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-family: monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #111;
+}
+
+.speech-bubble::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  bottom: 12px;
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-right: 8px solid #888;
+}
+
+.speech-bubble::after {
+  content: "";
+  position: absolute;
+  left: -6px;
+  bottom: 12px;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 6px solid #f4f4f4;
+}
+
 .layer {
   position: absolute;
   bottom: 0;              /* 🔥 무조건 바닥 기준 */
