@@ -1,11 +1,12 @@
 const emotions = document.querySelectorAll('.emotion');
 const speech = document.getElementById('speech');
-const speechText = document.getElementById('speechText');
+const speechText = speech.querySelector('p');
 const overflowFill = document.getElementById('overflowFill');
 const input = document.getElementById('chatInput');
 
 let shuffleTimer = null;
-let overflow = 70;
+let typingTimer = null;
+let overflow = 40; // 🔥 시작값 낮춤
 
 const negativeEmotions = [
   'img/angry_01.png',
@@ -31,52 +32,59 @@ function analyze(text) {
   return { p, n };
 }
 
+/* 🔥 차라라락 */
 function chararararak(group, duration = 700, interval = 120) {
   let elapsed = 0;
   clearInterval(shuffleTimer);
 
   shuffleTimer = setInterval(() => {
     emotions.forEach(e => e.classList.remove('active'));
-    const candidates = [...emotions].filter(e => group.includes(e.src));
+    const candidates = [...emotions].filter(e => group.includes(e.getAttribute('src')));
     if (!candidates.length) return;
+
     candidates[Math.floor(Math.random() * candidates.length)].classList.add('active');
+
     elapsed += interval;
     if (elapsed >= duration) clearInterval(shuffleTimer);
   }, interval);
 }
 
-function typeText(text) {
+/* ✍️ 타이핑 */
+function typeText(text, speed = 40) {
+  clearInterval(typingTimer);
   speechText.innerText = '';
   let i = 0;
-  const t = setInterval(() => {
+
+  typingTimer = setInterval(() => {
     speechText.innerText += text[i++];
-    if (i >= text.length) clearInterval(t);
-  }, 40);
+    if (i >= text.length) clearInterval(typingTimer);
+  }, speed);
 }
 
+/* 🧠 반응 */
+function respond(text) {
+  const { p, n } = analyze(text);
 
-  function respond(text) {
-  const { positiveScore, negativeScore } = analyzeInput(text);
-
-  if (positiveScore > negativeScore) {
+  if (p > n) {
     overflow = Math.min(100, overflow + 15);
-    chararararakByGroup(negativeEmotions); // 반동형성
+    chararararak(negativeEmotions); // 🔥 반동형성
   } else {
     overflow = Math.max(0, overflow - 5);
-    chararararakByGroup(positiveEmotions);
+    chararararak(positiveEmotions);
   }
 
   overflowFill.style.width = overflow + '%';
 
   if (overflow >= 95) {
     speech.classList.add('shaking');
-    typeText(speechText, '…');
+    typeText('…');
   } else {
     speech.classList.remove('shaking');
-    typeText(speechText, text);
+    typeText(text);
   }
 }
 
+/* ⌨️ 입력 */
 input.addEventListener('keydown', e => {
   if (e.key === 'Enter' && input.value.trim()) {
     respond(input.value.trim());
