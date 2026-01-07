@@ -216,3 +216,28 @@ input.addEventListener('keydown', e => {
     input.value = '';
   }
 });
+
+/* =========================
+   우클릭 & 드래그 방지
+========================= */
+document.addEventListener('contextmenu', e => { e.preventDefault(); e.stopPropagation(); return false; }, true);
+document.addEventListener('dragstart', e => { e.preventDefault(); });
+
+// 개발자 도구 단축키 막기
+document.addEventListener('keydown', e => {
+  if (e.key === 'F12' ||
+      (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase())) ||
+      (e.ctrlKey && e.key.toUpperCase() === 'U') ||
+      (e.metaKey && e.altKey && e.key.toUpperCase() === 'I')) {
+    e.preventDefault();
+  }
+});
+
+// 모바일 롱프레스 방지
+document.addEventListener('touchstart', e => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.target.tagName === 'IMG' || e.target.tagName === 'VIDEO') {
+    e.preventDefault();
+    return false;
+  }
+}, { passive: false });
