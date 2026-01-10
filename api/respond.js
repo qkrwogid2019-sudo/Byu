@@ -1,4 +1,25 @@
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+
+// Rate limiter 설정: 하루 20회
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(20, "1 d"),
+  analytics: true,
+});
+
 export default async function handler(req, res) {
+  // Rate limit 체크
+  const ip = req.headers["x-forwarded-for"]?.split(",")[0] || "anonymous";
+  const { success, remaining } = await ratelimit.limit(ip);
+
+  if (!success) {
+    return res.status(429).json({
+      reply: '…하루에 20번밖에 안 받아줘. 내일 와.',
+      remaining: 0
+    });
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -20,8 +41,8 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           model: 'gpt-4o',
-          temperature: 0.8,        // 🔥 헛소리 줄이고 캐릭터 고정
-          max_tokens: 160,         // 🔥 짧은 대사 유지
+          temperature: 0.8,
+          max_tokens: 160,
           messages: [
             {
               role: 'system',
@@ -72,7 +93,7 @@ export default async function handler(req, res) {
       data?.choices?.[0]?.message?.content?.trim() ||
       '…지금 말 안 할게.';
 
-    res.status(200).json({ reply });
+    res.status(200).json({ reply, remaining });
 
   } catch (err) {
     console.error(err);
