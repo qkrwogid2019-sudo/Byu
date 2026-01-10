@@ -2,8 +2,13 @@ import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
 // Rate limiter 설정: 하루 20회
+const redis = new Redis({
+  url: process.env.hahahahah_KV_REST_API_URL,
+  token: process.env.hahahahah_KV_REST_API_TOKEN,
+});
+
 const ratelimit = new Ratelimit({
-  redis: Redis.fromEnv(),
+  redis: redis,
   limiter: Ratelimit.slidingWindow(20, "1 d"),
   analytics: true,
 });
