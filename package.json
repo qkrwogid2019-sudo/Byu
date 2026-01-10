@@ -1,6 +1,7 @@
 {
   "name": "byu",
   "version": "1.0.0",
+  "type": "module",
   "dependencies": {
     "@upstash/ratelimit": "^2.0.0",
     "@upstash/redis": "^1.34.0"
